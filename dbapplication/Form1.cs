@@ -132,13 +132,13 @@ namespace labproject
 
         private void btn_test_Click(object sender, EventArgs e)
         {
-            string strSQL = "SELECT * FROM serial_tong_the";
-            OleDbCommand command = new OleDbCommand(strSQL, conn);
-            // Open the connection and execute the select command.    
+
             try
             {
-                // Open connecton    
                 conn.Open();
+                //string strSQL = "SELECT * FROM serial_tong_the";
+                //OleDbCommand command = new OleDbCommand(strSQL, conn);
+                // Open the connection and execute the select command.    
                 /*
                  Get all the tables and column fields in the access database
 
@@ -148,6 +148,38 @@ namespace labproject
                 foreach (DataRow row in schema.Rows)
                     Console.WriteLine("TABLE:" + row.Field<string>("TABLE_NAME") +
                                       " COLUMN:" + row.Field<string>("COLUMN_NAME"));
+
+                /*
+                 Get usertable:
+                https://stackoverflow.com/questions/1699897/retrieve-list-of-tables-in-ms-access-file
+                 */
+                // We only want user tables, not system tables
+                string[] restrictions = new string[4];
+                restrictions[3] = "Table";
+
+                DataTable userTables = conn.GetSchema("Tables", restrictions);
+
+                List<string> tableNames = new List<string>();
+                Console.WriteLine("Print all the tables in the access database:");
+                for (int i = 0; i < userTables.Rows.Count; i++)
+                {
+                    tableNames.Add(userTables.Rows[i][2].ToString());
+                    Console.WriteLine("Table "+i+ userTables.Rows[i][2].ToString());
+                }
+                /*
+                 Fetch all columns (data name) in an specific Access Table:
+                    https://stackoverflow.com/questions/3775047/fetch-column-names-for-specific-table
+                 */
+                using (var cmd = new OleDbCommand("select * from serial_tong_the", conn))
+                using (var reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly))
+                {
+                    var table = reader.GetSchemaTable();
+                    var nameCol = table.Columns["ColumnName"];
+                    foreach (DataRow row in table.Rows)
+                    {
+                        Console.WriteLine(row[nameCol]);
+                    }
+                }
                 // Execute command    
                 //using (OleDbDataReader reader = command.ExecuteReader())
                 //{
