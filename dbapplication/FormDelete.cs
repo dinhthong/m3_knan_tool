@@ -17,7 +17,7 @@ namespace labproject
         public FormDelete()
         {
             InitializeComponent();
-            string constr = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=D:\\prg455\\labproject\\Project Database.accdb;Persist Security Info=False";
+            string constr = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=D:\\prg455\\labproject\\knan_test_data.accdb;Persist Security Info=False";
             conn.ConnectionString = constr;
         }
         public void clearfunc()

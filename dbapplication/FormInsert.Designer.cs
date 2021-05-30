@@ -42,6 +42,7 @@
             this.groupBoxTableInsert = new System.Windows.Forms.GroupBox();
             this.RBCourse = new System.Windows.Forms.RadioButton();
             this.RBSchool = new System.Windows.Forms.RadioButton();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBoxTableInsert.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -170,11 +171,19 @@
             this.RBSchool.UseVisualStyleBackColor = true;
             this.RBSchool.CheckedChanged += new System.EventHandler(this.RBSchool_CheckedChanged);
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(370, 330);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(192, 20);
+            this.textBox1.TabIndex = 30;
+            // 
             // FormInsert
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(397, 283);
+            this.ClientSize = new System.Drawing.Size(851, 562);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.buttonClear);
@@ -189,6 +198,7 @@
             this.Controls.Add(this.groupBoxTableInsert);
             this.Name = "FormInsert";
             this.Text = "Insert";
+            this.Load += new System.EventHandler(this.FormInsert_Load);
             this.groupBoxTableInsert.ResumeLayout(false);
             this.groupBoxTableInsert.PerformLayout();
             this.ResumeLayout(false);
@@ -212,5 +222,6 @@
         private System.Windows.Forms.GroupBox groupBoxTableInsert;
         private System.Windows.Forms.RadioButton RBCourse;
         private System.Windows.Forms.RadioButton RBSchool;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }

@@ -14,10 +14,11 @@ namespace labproject
     public partial class FormInsert : Form
     {
         OleDbConnection conn = new OleDbConnection();
+        string ace_file_path = "C:\\Users\\nguye\\Downloads\\m3_knan_tool\\knan_test_data.accdb";
         public FormInsert()
         {
             InitializeComponent();
-            string constr = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=D:\\prg455\\labproject\\Project Database.accdb;Persist Security Info=False";
+            string constr = constr = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" + ace_file_path + ";Persist Security Info=False";
             conn.ConnectionString = constr;
         }
 
@@ -52,7 +53,7 @@ namespace labproject
                 cmd.Connection = conn;
                 if (RBSchool.Checked == true)
                 {
-                    cmd.CommandText = "INSERT INTO School (`School Name`, `School Address`, `School Phone`, `Course`) VALUES (@schoolName,@schoolAdr, @schoolPhone, @courseID)";
+                    cmd.CommandText = "INSERT INTO  (`School Name`, `School Address`, `School Phone`, `Course`) VALUES (@schoolName,@schoolAdr, @schoolPhone, @courseID)";
                     cmd.Parameters.AddWithValue("@schoolName", textBox1Insert.Text);
                     cmd.Parameters.AddWithValue("@schoolAdr", textBox2Insert.Text);
                     cmd.Parameters.AddWithValue("@schoolPhone", textBox3Insert.Text);
@@ -94,6 +95,11 @@ namespace labproject
             this.Close();
             Form1 formc = new Form1();
             formc.Show();
+        }
+
+        private void FormInsert_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

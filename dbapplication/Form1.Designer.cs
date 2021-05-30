@@ -41,6 +41,7 @@
             this.deleteRecordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridViewQuery = new System.Windows.Forms.DataGridView();
             this.textBoxQuery = new System.Windows.Forms.TextBox();
+            this.btn_test = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewQuery)).BeginInit();
             this.SuspendLayout();
@@ -53,7 +54,7 @@
             this.commandToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(455, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(971, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -68,7 +69,7 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -141,6 +142,7 @@
             this.dataGridViewQuery.Name = "dataGridViewQuery";
             this.dataGridViewQuery.Size = new System.Drawing.Size(455, 216);
             this.dataGridViewQuery.TabIndex = 2;
+            this.dataGridViewQuery.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewQuery_CellContentClick);
             // 
             // textBoxQuery
             // 
@@ -150,11 +152,22 @@
             this.textBoxQuery.Size = new System.Drawing.Size(455, 76);
             this.textBoxQuery.TabIndex = 3;
             // 
+            // btn_test
+            // 
+            this.btn_test.Location = new System.Drawing.Point(790, 265);
+            this.btn_test.Name = "btn_test";
+            this.btn_test.Size = new System.Drawing.Size(75, 23);
+            this.btn_test.TabIndex = 4;
+            this.btn_test.Text = "btn_test";
+            this.btn_test.UseVisualStyleBackColor = true;
+            this.btn_test.Click += new System.EventHandler(this.btn_test_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(455, 315);
+            this.ClientSize = new System.Drawing.Size(971, 506);
+            this.Controls.Add(this.btn_test);
             this.Controls.Add(this.textBoxQuery);
             this.Controls.Add(this.dataGridViewQuery);
             this.Controls.Add(this.menuStrip1);
@@ -162,6 +175,7 @@
             this.Name = "Form1";
             this.Text = "DatabaseApp";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Shown += new System.EventHandler(this.Form1_Shown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewQuery)).EndInit();
@@ -186,6 +200,7 @@
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.DataGridView dataGridViewQuery;
         private System.Windows.Forms.TextBox textBoxQuery;
+        private System.Windows.Forms.Button btn_test;
     }
 }
 
