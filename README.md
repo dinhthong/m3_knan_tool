@@ -8,3 +8,6 @@ Features of db app:
 - Update record
 - Delete record
 - File > Exit Application
+
+# todo
+- Get data from a Table as DataTable type  -> Use GridView to display the data on C# app

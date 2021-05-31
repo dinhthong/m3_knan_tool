@@ -180,6 +180,18 @@ namespace labproject
                         Console.WriteLine(row[nameCol]);
                     }
                 }
+                /*
+                 Load Data (Table Content) Into DataGridView From Access Database.
+                    https://www.youtube.com/watch?v=Uc8BuvMQIfI&ab_channel=Tech%26TravelTV
+                 */
+                DataTable dtContent = new DataTable();
+                using (var cmd = new OleDbCommand("select * from serial_tong_the", conn))
+                {
+                    OleDbDataReader reader = cmd.ExecuteReader();
+                    dtContent.Load(reader);
+
+                }
+                dataGridView1.DataSource = dtContent;
                 // Execute command    
                 //using (OleDbDataReader reader = command.ExecuteReader())
                 //{
@@ -194,6 +206,12 @@ namespace labproject
             {
                 Console.WriteLine(ex.Message);
             }
+            
+        }
+        private DataTable GetTableContent()
+        {
+            DataTable dtContent = new DataTable();
+            return dtContent;
         }
     }
 }
