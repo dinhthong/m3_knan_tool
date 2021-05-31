@@ -43,6 +43,9 @@
             this.RBCourse = new System.Windows.Forms.RadioButton();
             this.RBSchool = new System.Windows.Forms.RadioButton();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBox4 = new System.Windows.Forms.TextBox();
             this.groupBoxTableInsert.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -173,16 +176,40 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(370, 330);
+            this.textBox1.Location = new System.Drawing.Point(77, 332);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(192, 20);
+            this.textBox1.Size = new System.Drawing.Size(107, 20);
             this.textBox1.TabIndex = 30;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(342, 332);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(135, 20);
+            this.textBox2.TabIndex = 31;
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(536, 332);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(130, 20);
+            this.textBox3.TabIndex = 32;
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(212, 332);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(98, 20);
+            this.textBox4.TabIndex = 33;
             // 
             // FormInsert
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(851, 599);
+            this.Controls.Add(this.textBox4);
+            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonSave);
@@ -223,5 +250,8 @@
         private System.Windows.Forms.RadioButton RBCourse;
         private System.Windows.Forms.RadioButton RBSchool;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox textBox4;
     }
 }

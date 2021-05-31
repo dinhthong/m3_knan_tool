@@ -213,5 +213,61 @@ namespace labproject
             DataTable dtContent = new DataTable();
             return dtContent;
         }
+        List<CellPosition> data_change_cell_index = new List<CellPosition>();
+        private void btn_save_Click(object sender, EventArgs e)
+        {
+
+            /*
+             Save last DataGrid Content
+             */
+            // dataGridView1
+            Console.WriteLine("There are total of {0} data change", data_change_cell_index.Count);
+            for (int j=0; j< data_change_cell_index.Count; j++)
+            {
+                Console.WriteLine("Change number {0}: Row {1} Column {2}", j, data_change_cell_index[j].row, data_change_cell_index[j].col);
+            }
+            data_change_cell_index.Clear();
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+        /*
+         Create a proper 2D int list in C#
+         https://stackoverflow.com/questions/665299/are-2-dimensional-lists-possible-in-c
+         */
+        public class CellPosition
+        {
+            public int row { get; set; }
+            public int col { get; set; }
+        }
+
+        
+       // uint data_change_cell_index;
+        private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            Console.WriteLine("Data change detected");
+            string msg = String.Format(
+               "Cell at row {0}, column {1} value changed",
+               e.RowIndex, e.ColumnIndex);
+            Console.WriteLine(msg, "Cell Value Changed");
+
+            data_change_cell_index.Add(new CellPosition
+            {
+                row = e.RowIndex,
+                col = e.ColumnIndex
+            });
+
+            //  if ()
+        }
+
+        private void dataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            string msg = String.Format(
+               "Cell at row {0}, column {1} double click",
+               e.RowIndex, e.ColumnIndex);
+            Console.WriteLine(msg, "Double Click");
+        }
     }
 }
