@@ -243,7 +243,6 @@ namespace labproject
             public int col { get; set; }
         }
 
-        
        // uint data_change_cell_index;
         private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
