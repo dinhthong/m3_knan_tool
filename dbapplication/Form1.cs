@@ -16,6 +16,7 @@ namespace labproject
         DataTable vt = new DataTable();
         string constr;
         string ace_file_path = "C:\\Users\\nguye\\Downloads\\m3_knan_tool\\knan_test_data.accdb";
+        string wk_table_name = "serial_tong_the";
         public Form1()
         {
             InitializeComponent();
@@ -129,7 +130,7 @@ namespace labproject
         {
             constr = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" + ace_file_path + ";Persist Security Info=False";
         }
-
+        DataTable pre_GridData;
         private void btn_test_Click(object sender, EventArgs e)
         {
 
@@ -170,7 +171,7 @@ namespace labproject
                  Fetch all columns (data name) in an specific Access Table:
                     https://stackoverflow.com/questions/3775047/fetch-column-names-for-specific-table
                  */
-                using (var cmd = new OleDbCommand("select * from serial_tong_the", conn))
+                using (var cmd = new OleDbCommand("select * from " + wk_table_name, conn))
                 using (var reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly))
                 {
                     var table = reader.GetSchemaTable();
@@ -185,22 +186,18 @@ namespace labproject
                     https://www.youtube.com/watch?v=Uc8BuvMQIfI&ab_channel=Tech%26TravelTV
                  */
                 DataTable dtContent = new DataTable();
-                using (var cmd = new OleDbCommand("select * from serial_tong_the", conn))
+                using (var cmd = new OleDbCommand("select * from "+ wk_table_name, conn))
                 {
                     OleDbDataReader reader = cmd.ExecuteReader();
                     dtContent.Load(reader);
-
                 }
+
+
+                pre_GridData = dtContent;
+                /*
+                 get pointer to the DataSource
+                 */
                 dataGridView1.DataSource = dtContent;
-                // Execute command    
-                //using (OleDbDataReader reader = command.ExecuteReader())
-                //{
-                //    Console.WriteLine("------------Original data----------------");
-                //    while (reader.Read())
-                //    {
-                //        Console.WriteLine("{0} {1}", reader["Name"].ToString(), reader["Address"].ToString());
-                //    }
-                //}
             }
             catch (Exception ex)
             {
@@ -226,6 +223,27 @@ namespace labproject
             {
                 Console.WriteLine("Change number {0}: Row {1} Column {2}", j, data_change_cell_index[j].row, data_change_cell_index[j].col);
             }
+            /*
+             Bind data from dataGridView1 to Access Database:
+            https://stackoverflow.com/questions/20998803/c-sharp-datatable-update-access-database
+            https://stackoverflow.com/questions/6295161/how-to-build-a-datatable-from-a-datagridview
+
+             */
+            string query = "SELECT * FROM " + wk_table_name;
+            using (OleDbCommand oledbCommand = new OleDbCommand(query, conn))
+            {
+                using (OleDbDataAdapter oledbDataAdapter = new OleDbDataAdapter(oledbCommand))
+                {
+                    using (OleDbCommandBuilder oledbCommandBuilder = new OleDbCommandBuilder(oledbDataAdapter))
+                    {
+                        oledbDataAdapter.DeleteCommand = oledbCommandBuilder.GetDeleteCommand(true);
+                        oledbDataAdapter.InsertCommand = oledbCommandBuilder.GetInsertCommand(true);
+                        oledbDataAdapter.UpdateCommand = oledbCommandBuilder.GetUpdateCommand(true);
+                        oledbDataAdapter.Update(((DataTable)dataGridView1.DataSource));
+                    }
+                }
+            }
+
             data_change_cell_index.Clear();
         }
 
@@ -257,8 +275,25 @@ namespace labproject
                 row = e.RowIndex,
                 col = e.ColumnIndex
             });
+            //pre_GridData.
+            //Console.WriteLine("Cell Previous value is: {0}", pre_GridData.Rows[e.RowIndex].ItemArray[e.ColumnIndex]);
 
-            //  if ()
+            Console.WriteLine("Cell Value Changed New Value is: {0}", dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
+
+            // 
+            /*
+             Perform data update here
+             */
+            dataGridView1.EndEdit();
+
+            //string sql = "UPDATE CostT SET tFormSent = @selection1,TName = @UserName,FormDate = @FormDate where ReqNum = @ReqNum";
+            //OleDbCommand cmd = new OleDbCommand(sql, conn);
+            //cmd.Parameters.Add("@selection1", Selection1.Text);
+            //cmd.Parameters.Add("@UserName", UserName.Text);
+            //cmd.Parameters.Add("@FromDate", FromDate.Text);
+            //cmd.Parameters.Add("@ReqNum", ReqNum.Text);
+            //cmd.ExecuteNonQuery();
+            //con22.Close();
         }
 
         private void dataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -267,6 +302,22 @@ namespace labproject
                "Cell at row {0}, column {1} double click",
                e.RowIndex, e.ColumnIndex);
             Console.WriteLine(msg, "Double Click");
+        }
+
+        private void dataGridView1_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            Console.WriteLine("new Row is automatically added");
+            OleDbCommand cmd = conn.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+      //      cmd.CommandText = "insert into "+ wk_table_name + " values();
+        }
+
+        private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            var oldValue = dataGridView1[e.ColumnIndex, e.RowIndex].Value;
+            Console.WriteLine("Cell Previous value is: {0}", oldValue);
+            var newValue = e.FormattedValue;
+
         }
     }
 }
