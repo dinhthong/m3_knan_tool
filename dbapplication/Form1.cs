@@ -44,6 +44,8 @@ namespace labproject
             conn = new OleDbConnection(constr);         // establishes connection to the database
             disconnectToolStripMenuItem.Enabled = true;
             connectToolStripMenuItem.Enabled = false;
+            FormConnect formconnect = new FormConnect();
+            formconnect.Show();
         }
 
         private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)

@@ -50,6 +50,7 @@
             this.txt_search = new System.Windows.Forms.TextBox();
             this.btn_search = new System.Windows.Forms.Button();
             this.btn_excel = new System.Windows.Forms.Button();
+            this.btn_insert = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewQuery)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -249,11 +250,21 @@
             this.btn_excel.UseVisualStyleBackColor = true;
             this.btn_excel.Click += new System.EventHandler(this.btn_excel_Click);
             // 
+            // btn_insert
+            // 
+            this.btn_insert.Location = new System.Drawing.Point(52, 517);
+            this.btn_insert.Name = "btn_insert";
+            this.btn_insert.Size = new System.Drawing.Size(75, 23);
+            this.btn_insert.TabIndex = 13;
+            this.btn_insert.Text = "insert";
+            this.btn_insert.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(971, 575);
+            this.Controls.Add(this.btn_insert);
             this.Controls.Add(this.btn_excel);
             this.Controls.Add(this.btn_search);
             this.Controls.Add(this.txt_search);
@@ -305,6 +316,7 @@
         private System.Windows.Forms.TextBox txt_search;
         private System.Windows.Forms.Button btn_search;
         private System.Windows.Forms.Button btn_excel;
+        private System.Windows.Forms.Button btn_insert;
     }
 }
 

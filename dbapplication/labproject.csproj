@@ -54,6 +54,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormConnect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormConnect.Designer.cs">
+      <DependentUpon>FormConnect.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormDelete.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -66,6 +72,12 @@
     <Compile Include="FormInsert.Designer.cs">
       <DependentUpon>FormInsert.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormInsertNew.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormInsertNew.Designer.cs">
+      <DependentUpon>FormInsertNew.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormUpdate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -77,11 +89,17 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormConnect.resx">
+      <DependentUpon>FormConnect.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormDelete.resx">
       <DependentUpon>FormDelete.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormInsert.resx">
       <DependentUpon>FormInsert.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormInsertNew.resx">
+      <DependentUpon>FormInsertNew.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormUpdate.resx">
       <DependentUpon>FormUpdate.cs</DependentUpon>

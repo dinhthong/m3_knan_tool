@@ -34,5 +34,17 @@ namespace labproject.Properties {
                 this["log_file_path"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string access_file_path {
+            get {
+                return ((string)(this["access_file_path"]));
+            }
+            set {
+                this["access_file_path"] = value;
+            }
+        }
     }
 }
