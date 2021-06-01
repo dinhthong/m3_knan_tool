@@ -46,5 +46,29 @@ namespace labproject.Properties {
                 this["access_file_path"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string table {
+            get {
+                return ((string)(this["table"]));
+            }
+            set {
+                this["table"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("serial_tong_the")]
+        public string access_table_name {
+            get {
+                return ((string)(this["access_table_name"]));
+            }
+            set {
+                this["access_table_name"] = value;
+            }
+        }
     }
 }

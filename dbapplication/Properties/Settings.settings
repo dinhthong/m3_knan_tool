@@ -8,5 +8,11 @@
     <Setting Name="access_file_path" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="table" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="access_table_name" Type="System.String" Scope="User">
+      <Value Profile="(Default)">serial_tong_the</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

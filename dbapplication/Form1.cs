@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Data.OleDb;
 using System.IO;
 using Excel = Microsoft.Office.Interop.Excel;
+//using labproject;
 
 namespace labproject
 {
@@ -41,7 +42,8 @@ namespace labproject
         OleDbConnection conn;
         private void connectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            conn = new OleDbConnection(constr);         // establishes connection to the database
+            myAppUtilities.connec_to_accdb(ace_file_path);
+           // conn = new OleDbConnection(constr);         // establishes connection to the database
             disconnectToolStripMenuItem.Enabled = true;
             connectToolStripMenuItem.Enabled = false;
             FormConnect formconnect = new FormConnect();
@@ -50,8 +52,9 @@ namespace labproject
 
         private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OleDbConnection conn = new OleDbConnection(constr);
-            conn.Close();
+            // OleDbConnection conn = new OleDbConnection(constr);
+            //conn.Close();
+            myAppUtilities.disconnec_to_accdb(ace_file_path);
             disconnectToolStripMenuItem.Enabled = false;
             connectToolStripMenuItem.Enabled = true;
         }
@@ -137,6 +140,7 @@ namespace labproject
 
             Console.WriteLine(Properties.Settings.Default.log_file_path);
             logfile_txt_path = Properties.Settings.Default.log_file_path;
+
             /*
              Create new config file if not exist
             */
@@ -170,29 +174,22 @@ namespace labproject
                  */
             }
             //txt_filepath.Text = Properties.Settings.Default.excel_file_path;
-            //ex_file_path = Properties.Settings.Default.excel_file_path;
+            //access_file_path = Properties.Settings.Default.excel_file_path;
             //txt_input_serial.Text = Properties.Settings.Default.char_template;
             //inputCol = Properties.Settings.Default.input_col;
             //outputCol = Properties.Settings.Default.output_col;
             write_new_log_message("New login");
-
         }
 
         private void write_new_log_message(string input)
         {
-            //FileInfo fi = new FileInfo(logfile_txt_path);
-            //while (IsFileLocked(fi))
-            //{
-
-            //}
             File.AppendAllText(logfile_txt_path, DateTime.Now.ToString("MM/dd/yyyy h:mm tt: ") + input + Environment.NewLine);
         }
 
-        DataTable pre_GridData;
+        //DataTable pre_GridData;
         DataTable dtContent = new DataTable();
         private void btn_test_Click(object sender, EventArgs e)
         {
-
             try
             {
                 conn.Open();
