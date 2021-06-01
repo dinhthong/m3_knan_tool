@@ -45,6 +45,10 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.btn_save = new System.Windows.Forms.Button();
             this.btn_del = new System.Windows.Forms.Button();
+            this.txt_user = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txt_search = new System.Windows.Forms.TextBox();
+            this.btn_search = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewQuery)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -199,11 +203,50 @@
             this.btn_del.UseVisualStyleBackColor = true;
             this.btn_del.Click += new System.EventHandler(this.btn_del_Click);
             // 
+            // txt_user
+            // 
+            this.txt_user.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txt_user.Location = new System.Drawing.Point(679, 134);
+            this.txt_user.Name = "txt_user";
+            this.txt_user.Size = new System.Drawing.Size(227, 29);
+            this.txt_user.TabIndex = 8;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(675, 101);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(144, 24);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Nguoi thuc hien";
+            // 
+            // txt_search
+            // 
+            this.txt_search.Location = new System.Drawing.Point(17, 226);
+            this.txt_search.Name = "txt_search";
+            this.txt_search.Size = new System.Drawing.Size(313, 20);
+            this.txt_search.TabIndex = 10;
+            // 
+            // btn_search
+            // 
+            this.btn_search.Location = new System.Drawing.Point(367, 224);
+            this.btn_search.Name = "btn_search";
+            this.btn_search.Size = new System.Drawing.Size(75, 23);
+            this.btn_search.TabIndex = 11;
+            this.btn_search.Text = "search";
+            this.btn_search.UseVisualStyleBackColor = true;
+            this.btn_search.Click += new System.EventHandler(this.btn_search_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(971, 552);
+            this.ClientSize = new System.Drawing.Size(971, 575);
+            this.Controls.Add(this.btn_search);
+            this.Controls.Add(this.txt_search);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.txt_user);
             this.Controls.Add(this.btn_del);
             this.Controls.Add(this.btn_save);
             this.Controls.Add(this.dataGridView1);
@@ -245,6 +288,10 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button btn_save;
         private System.Windows.Forms.Button btn_del;
+        private System.Windows.Forms.TextBox txt_user;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txt_search;
+        private System.Windows.Forms.Button btn_search;
     }
 }
 

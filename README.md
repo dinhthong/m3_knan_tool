@@ -15,6 +15,8 @@ Features of db app:
 - Add log file (refer to my other project)
 - Export data to Excel file
 - Import data feature, if the data format is persistent and it complies with the database schema.
+# App design
+- 
 
 # DataGrid feature
 - Disable editing first column (ID). The data of this column is automatically updated when user inserts a new row.

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.OleDb;
-
+using System.IO;
 namespace labproject
 {
     public partial class Form1 : Form
@@ -125,12 +125,67 @@ namespace labproject
         {
 
         }
-
+        string logfile_txt_path;
+        string logfile_name = "knan_app_log.txt";
         private void Form1_Shown(object sender, EventArgs e)
         {
             constr = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" + ace_file_path + ";Persist Security Info=False";
+
+            Console.WriteLine(Properties.Settings.Default.log_file_path);
+            logfile_txt_path = Properties.Settings.Default.log_file_path;
+            /*
+             Create new config file if not exist
+            */
+            if (!File.Exists(logfile_txt_path))
+            {
+                Console.WriteLine("File does not exist. Creating a new file");
+                /*
+                 Scan Drive on computer 
+                https://stackoverflow.com/questions/5195653/how-to-get-all-drives-in-pc-with-net-using-c-sharp
+                 */
+                foreach (var drive in DriveInfo.GetDrives())
+                {
+                    Console.WriteLine("Drive Type: {0}", drive.Name);
+                    Console.WriteLine("Drive Size: {0}", drive.TotalSize);
+                    if (drive.Name != @"C:\" && drive.TotalSize > 50000)
+                    {
+                        logfile_txt_path = drive.Name + logfile_name;
+                        Properties.Settings.Default.log_file_path = logfile_txt_path;
+                        Properties.Settings.Default.Save();
+                        break;
+                    }
+                }
+                Console.WriteLine("Create file {0}", logfile_txt_path);
+                File.CreateText(logfile_txt_path);
+            }
+            else
+            {
+                Console.WriteLine("File already exists");
+                /*
+                 Read the first line as excel file path.
+                 */
+            }
+            //txt_filepath.Text = Properties.Settings.Default.excel_file_path;
+            //ex_file_path = Properties.Settings.Default.excel_file_path;
+            //txt_input_serial.Text = Properties.Settings.Default.char_template;
+            //inputCol = Properties.Settings.Default.input_col;
+            //outputCol = Properties.Settings.Default.output_col;
+            write_new_log_message("New login");
+
         }
+
+        private void write_new_log_message(string input)
+        {
+            //FileInfo fi = new FileInfo(logfile_txt_path);
+            //while (IsFileLocked(fi))
+            //{
+
+            //}
+            File.AppendAllText(logfile_txt_path, DateTime.Now.ToString("MM/dd/yyyy h:mm tt: ") + input + Environment.NewLine);
+        }
+
         DataTable pre_GridData;
+        DataTable dtContent = new DataTable();
         private void btn_test_Click(object sender, EventArgs e)
         {
 
@@ -185,7 +240,7 @@ namespace labproject
                  Load Data (Table Content) Into DataGridView From Access Database.
                     https://www.youtube.com/watch?v=Uc8BuvMQIfI&ab_channel=Tech%26TravelTV
                  */
-                DataTable dtContent = new DataTable();
+                
                 using (var cmd = new OleDbCommand("select * from "+ wk_table_name, conn))
                 {
                     OleDbDataReader reader = cmd.ExecuteReader();
@@ -193,7 +248,7 @@ namespace labproject
                 }
 
 
-                pre_GridData = dtContent;
+               // pre_GridData = dtContent;
                 /*
                  get pointer to the DataSource
                  */
@@ -213,7 +268,6 @@ namespace labproject
         List<CellPosition> data_change_cell_index = new List<CellPosition>();
         private void btn_save_Click(object sender, EventArgs e)
         {
-
             /*
              Save last DataGrid Content
              */
@@ -223,6 +277,7 @@ namespace labproject
             {
                 Console.WriteLine("Change number {0}: Row {1} Column {2}", j, data_change_cell_index[j].row, data_change_cell_index[j].col);
             }
+            write_new_log_message(string.Format("Save button click by user: {0} with {1} changes", txt_user.Text, data_change_cell_index.Count));
             /*
              Bind data from dataGridView1 to Access Database:
             https://stackoverflow.com/questions/20998803/c-sharp-datatable-update-access-database
@@ -330,6 +385,21 @@ namespace labproject
             {
                 dataGridView1.Rows.RemoveAt(item.Index);
             }
+        }
+
+        private void btn_search_Click(object sender, EventArgs e)
+        {
+            //{
+            //    if (string.IsNullOrEmpty(txt_search.Text))
+            //        dataGridView1.DataSource = dtContent;
+            //    else
+            //    {
+            //        var query = from o in dtContent.AsEnumerable()
+            //                    where o.Field<double>("STT_TB") == Convert.ToInt32(txt_search.Text)
+            //                    select o;
+            //        dataGridView1.DataSource = query.ToList();
+            //    }
+            //}
         }
     }
 }
