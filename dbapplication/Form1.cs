@@ -243,7 +243,9 @@ namespace labproject
                     }
                 }
             }
-
+            dataGridView1.ResetBindings();
+            dataGridView1.Update();
+            dataGridView1.Refresh();
             data_change_cell_index.Clear();
         }
 
@@ -318,6 +320,16 @@ namespace labproject
             Console.WriteLine("Cell Previous value is: {0}", oldValue);
             var newValue = e.FormattedValue;
 
+        }
+        /*
+         https://stackoverflow.com/questions/2084346/how-to-delete-a-selected-datagridviewrow-and-update-a-connected-database-table
+         */
+        private void btn_del_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow item in this.dataGridView1.SelectedRows)
+            {
+                dataGridView1.Rows.RemoveAt(item.Index);
+            }
         }
     }
 }

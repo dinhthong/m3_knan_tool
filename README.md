@@ -20,3 +20,4 @@ Features of db app:
 - Disable editing first column (ID). The data of this column is automatically updated when user inserts a new row.
 - If the value of previous changed cells is zero -> No need for specify the change reason, the update is valid.
 - Perform data validation and show input errors (if any) when user inputs data to the Table, so user must correct before the next SAVE button click. Note that the program might already performs this when we define the data structure for the Column Schema  
+- Trying to update ID column value -> doesn't take effect. The program will discard this, and auto fill field in the next DataGrid Update
