@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.OleDb;
 using System.IO;
+using Excel = Microsoft.Office.Interop.Excel;
+
 namespace labproject
 {
     public partial class Form1 : Form
@@ -401,5 +403,54 @@ namespace labproject
             //    }
             //}
         }
+        string excel_file_path;
+        /*
+         https://stackoverflow.com/questions/8207869/how-to-export-datatable-to-excel
+        */
+        private void btn_excel_Click(object sender, EventArgs e)
+        {
+            excel_file_path = Application.StartupPath + @"\..\.." + @"\Database1.xlsx";
+            // toExcelFile();
+            dtContent.ExportToExcel(excel_file_path);
+        }
+       
+        public void toExcelFile()
+        {
+            //Create COM Objects. Create a COM object for everything that is referenced
+            Excel.Application xlApp = new Excel.Application();
+            excel_file_path = Application.StartupPath + @"\..\.." + @"\Database.xlsx";
+            Console.WriteLine(excel_file_path);
+            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(excel_file_path);
+            //Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(@"E:\Cuahang_ap\Database.xlsx");
+            //Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
+            //Excel.Range xlRange = xlWorksheet.UsedRange;
+            //decode = new string[rowCount, colCount];
+            //rowCount = xlRange.Rows.Count;
+            //colCount = xlRange.Columns.Count;
+            //iterate over the rows and columns and print to the console as it appears in the file
+            //excel is not zero based!!
+            //for (int i = rowCount + 1; i <= rowCount + productList.Count; i++)
+            //{
+            //    xlRange.Cells[i, 1].Value2 = productList[i - rowCount - 1].Name;
+            //    xlRange.Cells[i, 2].Value2 = productList[i - rowCount - 1].Image_url;
+            //    xlRange.Cells[i, 3].Value2 = productList[i - rowCount - 1].Product_url;
+            //    xlRange.Cells[i, 4].Value2 = productList[i - rowCount - 1].Price;
+            //}
+            xlWorkbook.Worksheets.Add(dtContent, "Sheet1");
+
+            //cleanup
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            //rule of thumb for releasing com objects:
+            //  never use two dots, all COM objects must be referenced and released individually
+            //  ex: [somthing].[something].[something] is bad
+            //  Console.WriteLine(decode[0, 0] + decode[1, 1]);
+            //close and release
+            xlWorkbook.Close();
+            //quit and release
+            xlApp.Quit();
+        }
+      
+
     }
 }

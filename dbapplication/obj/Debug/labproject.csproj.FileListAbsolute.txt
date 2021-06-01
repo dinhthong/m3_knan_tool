@@ -51,3 +51,4 @@ C:\Users\nguye\Downloads\m3_knan_tool\dbapplication\obj\Debug\labproject.csproj.
 C:\Users\nguye\Downloads\m3_knan_tool\dbapplication\obj\Debug\labproject.csproj.CoreCompileInputs.cache
 C:\Users\nguye\Downloads\m3_knan_tool\dbapplication\obj\Debug\labproject.exe
 C:\Users\nguye\Downloads\m3_knan_tool\dbapplication\obj\Debug\labproject.pdb
+C:\Users\nguye\Downloads\m3_knan_tool\dbapplication\obj\Debug\labproject.csproj.ResolveComReference.cache

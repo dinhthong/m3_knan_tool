@@ -49,6 +49,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txt_search = new System.Windows.Forms.TextBox();
             this.btn_search = new System.Windows.Forms.Button();
+            this.btn_excel = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewQuery)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -238,11 +239,22 @@
             this.btn_search.UseVisualStyleBackColor = true;
             this.btn_search.Click += new System.EventHandler(this.btn_search_Click);
             // 
+            // btn_excel
+            // 
+            this.btn_excel.Location = new System.Drawing.Point(757, 473);
+            this.btn_excel.Name = "btn_excel";
+            this.btn_excel.Size = new System.Drawing.Size(75, 23);
+            this.btn_excel.TabIndex = 12;
+            this.btn_excel.Text = "button1";
+            this.btn_excel.UseVisualStyleBackColor = true;
+            this.btn_excel.Click += new System.EventHandler(this.btn_excel_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(971, 575);
+            this.Controls.Add(this.btn_excel);
             this.Controls.Add(this.btn_search);
             this.Controls.Add(this.txt_search);
             this.Controls.Add(this.label1);
@@ -292,6 +304,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txt_search;
         private System.Windows.Forms.Button btn_search;
+        private System.Windows.Forms.Button btn_excel;
     }
 }
 
