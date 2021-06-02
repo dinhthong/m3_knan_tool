@@ -50,5 +50,10 @@ namespace labproject
         {
             return my_conn;
         }
+
+        public static void save_settings()
+        {
+            Properties.Settings.Default.Save();
+        }
     }
 }

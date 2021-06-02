@@ -18,8 +18,8 @@ namespace labproject
     {
         DataTable vt = new DataTable();
         string constr;
-        string ace_file_path = "C:\\Users\\nguye\\Downloads\\m3_knan_tool\\knan_test_data.accdb";
-        string wk_table_name = "serial_tong_the";
+        string ace_file_path;
+        //string wk_table_name = "serial_tong_the";
         public Form1()
         {
             InitializeComponent();
@@ -136,8 +136,9 @@ namespace labproject
         string logfile_name = "knan_app_log.txt";
         private void Form1_Shown(object sender, EventArgs e)
         {
-            constr = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" + ace_file_path + ";Persist Security Info=False";
 
+            constr = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" + ace_file_path + ";Persist Security Info=False";
+            ace_file_path = Properties.Settings.Default.access_file_path;
             Console.WriteLine(Properties.Settings.Default.log_file_path);
             logfile_txt_path = Properties.Settings.Default.log_file_path;
 
@@ -159,7 +160,7 @@ namespace labproject
                     {
                         logfile_txt_path = drive.Name + logfile_name;
                         Properties.Settings.Default.log_file_path = logfile_txt_path;
-                        Properties.Settings.Default.Save();
+                        myAppUtilities.save_settings();
                         break;
                     }
                 }
@@ -179,6 +180,8 @@ namespace labproject
             //inputCol = Properties.Settings.Default.input_col;
             //outputCol = Properties.Settings.Default.output_col;
             write_new_log_message("New login");
+            myAppUtilities.connec_to_accdb(ace_file_path);
+            load_database();
         }
 
         private void write_new_log_message(string input)
@@ -188,11 +191,12 @@ namespace labproject
 
         //DataTable pre_GridData;
         DataTable dtContent = new DataTable();
-        private void btn_test_Click(object sender, EventArgs e)
+
+        void load_database()
         {
             try
             {
-                conn.Open();
+                myAppUtilities.get_connection().Open();
                 //string strSQL = "SELECT * FROM serial_tong_the";
                 //OleDbCommand command = new OleDbCommand(strSQL, conn);
                 // Open the connection and execute the select command.    
@@ -201,7 +205,7 @@ namespace labproject
 
                 https://stackoverflow.com/questions/15978225/how-to-get-all-table-names-and-also-column-name-using-c-sharp-in-ms-access
                  */
-                DataTable schema = conn.GetSchema("Columns");
+                DataTable schema = myAppUtilities.get_connection().GetSchema("Columns");
                 foreach (DataRow row in schema.Rows)
                     Console.WriteLine("TABLE:" + row.Field<string>("TABLE_NAME") +
                                       " COLUMN:" + row.Field<string>("COLUMN_NAME"));
@@ -214,20 +218,20 @@ namespace labproject
                 string[] restrictions = new string[4];
                 restrictions[3] = "Table";
 
-                DataTable userTables = conn.GetSchema("Tables", restrictions);
+                DataTable userTables = myAppUtilities.get_connection().GetSchema("Tables", restrictions);
 
                 List<string> tableNames = new List<string>();
                 Console.WriteLine("Print all the tables in the access database:");
                 for (int i = 0; i < userTables.Rows.Count; i++)
                 {
                     tableNames.Add(userTables.Rows[i][2].ToString());
-                    Console.WriteLine("Table "+i+ userTables.Rows[i][2].ToString());
+                    Console.WriteLine("Table " + i + userTables.Rows[i][2].ToString());
                 }
                 /*
                  Fetch all columns (data name) in an specific Access Table:
                     https://stackoverflow.com/questions/3775047/fetch-column-names-for-specific-table
                  */
-                using (var cmd = new OleDbCommand("select * from " + wk_table_name, conn))
+                using (var cmd = new OleDbCommand("select * from " + Properties.Settings.Default.access_table_name, myAppUtilities.get_connection()))
                 using (var reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly))
                 {
                     var table = reader.GetSchemaTable();
@@ -241,15 +245,15 @@ namespace labproject
                  Load Data (Table Content) Into DataGridView From Access Database.
                     https://www.youtube.com/watch?v=Uc8BuvMQIfI&ab_channel=Tech%26TravelTV
                  */
-                
-                using (var cmd = new OleDbCommand("select * from "+ wk_table_name, conn))
+
+                using (var cmd = new OleDbCommand("select * from " + Properties.Settings.Default.access_table_name, myAppUtilities.get_connection()))
                 {
                     OleDbDataReader reader = cmd.ExecuteReader();
                     dtContent.Load(reader);
                 }
 
 
-               // pre_GridData = dtContent;
+                // pre_GridData = dtContent;
                 /*
                  get pointer to the DataSource
                  */
@@ -259,6 +263,78 @@ namespace labproject
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+        private void btn_test_Click(object sender, EventArgs e)
+        {
+            //try
+            //{
+            //    conn.Open();
+            //    //string strSQL = "SELECT * FROM serial_tong_the";
+            //    //OleDbCommand command = new OleDbCommand(strSQL, conn);
+            //    // Open the connection and execute the select command.    
+            //    /*
+            //     Get all the tables and column fields in the access database
+
+            //    https://stackoverflow.com/questions/15978225/how-to-get-all-table-names-and-also-column-name-using-c-sharp-in-ms-access
+            //     */
+            //    DataTable schema = conn.GetSchema("Columns");
+            //    foreach (DataRow row in schema.Rows)
+            //        Console.WriteLine("TABLE:" + row.Field<string>("TABLE_NAME") +
+            //                          " COLUMN:" + row.Field<string>("COLUMN_NAME"));
+
+            //    /*
+            //     Get usertable:
+            //    https://stackoverflow.com/questions/1699897/retrieve-list-of-tables-in-ms-access-file
+            //     */
+            //    // We only want user tables, not system tables
+            //    string[] restrictions = new string[4];
+            //    restrictions[3] = "Table";
+
+            //    DataTable userTables = conn.GetSchema("Tables", restrictions);
+
+            //    List<string> tableNames = new List<string>();
+            //    Console.WriteLine("Print all the tables in the access database:");
+            //    for (int i = 0; i < userTables.Rows.Count; i++)
+            //    {
+            //        tableNames.Add(userTables.Rows[i][2].ToString());
+            //        Console.WriteLine("Table "+i+ userTables.Rows[i][2].ToString());
+            //    }
+            //    /*
+            //     Fetch all columns (data name) in an specific Access Table:
+            //        https://stackoverflow.com/questions/3775047/fetch-column-names-for-specific-table
+            //     */
+            //    using (var cmd = new OleDbCommand("select * from " + wk_table_name, conn))
+            //    using (var reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly))
+            //    {
+            //        var table = reader.GetSchemaTable();
+            //        var nameCol = table.Columns["ColumnName"];
+            //        foreach (DataRow row in table.Rows)
+            //        {
+            //            Console.WriteLine(row[nameCol]);
+            //        }
+            //    }
+            //    /*
+            //     Load Data (Table Content) Into DataGridView From Access Database.
+            //        https://www.youtube.com/watch?v=Uc8BuvMQIfI&ab_channel=Tech%26TravelTV
+            //     */
+                
+            //    using (var cmd = new OleDbCommand("select * from "+ wk_table_name, conn))
+            //    {
+            //        OleDbDataReader reader = cmd.ExecuteReader();
+            //        dtContent.Load(reader);
+            //    }
+
+
+            //   // pre_GridData = dtContent;
+            //    /*
+            //     get pointer to the DataSource
+            //     */
+            //    dataGridView1.DataSource = dtContent;
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //}
             
         }
         private DataTable GetTableContent()
@@ -285,8 +361,8 @@ namespace labproject
             https://stackoverflow.com/questions/6295161/how-to-build-a-datatable-from-a-datagridview
 
              */
-            string query = "SELECT * FROM " + wk_table_name;
-            using (OleDbCommand oledbCommand = new OleDbCommand(query, conn))
+            string query = "SELECT * FROM " + Properties.Settings.Default.access_table_name;
+            using (OleDbCommand oledbCommand = new OleDbCommand(query, myAppUtilities.get_connection()))
             {
                 using (OleDbDataAdapter oledbDataAdapter = new OleDbDataAdapter(oledbCommand))
                 {
@@ -319,7 +395,6 @@ namespace labproject
             public int col { get; set; }
         }
 
-       // uint data_change_cell_index;
         private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             Console.WriteLine("Data change detected");
@@ -333,25 +408,9 @@ namespace labproject
                 row = e.RowIndex,
                 col = e.ColumnIndex
             });
-            //pre_GridData.
-            //Console.WriteLine("Cell Previous value is: {0}", pre_GridData.Rows[e.RowIndex].ItemArray[e.ColumnIndex]);
 
             Console.WriteLine("Cell Value Changed New Value is: {0}", dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
-
-            // 
-            /*
-             Perform data update here
-             */
             dataGridView1.EndEdit();
-
-            //string sql = "UPDATE CostT SET tFormSent = @selection1,TName = @UserName,FormDate = @FormDate where ReqNum = @ReqNum";
-            //OleDbCommand cmd = new OleDbCommand(sql, conn);
-            //cmd.Parameters.Add("@selection1", Selection1.Text);
-            //cmd.Parameters.Add("@UserName", UserName.Text);
-            //cmd.Parameters.Add("@FromDate", FromDate.Text);
-            //cmd.Parameters.Add("@ReqNum", ReqNum.Text);
-            //cmd.ExecuteNonQuery();
-            //con22.Close();
         }
 
         private void dataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -365,8 +424,8 @@ namespace labproject
         private void dataGridView1_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
             Console.WriteLine("new Row is automatically added");
-            OleDbCommand cmd = conn.CreateCommand();
-            cmd.CommandType = CommandType.Text;
+            //OleDbCommand cmd = conn.CreateCommand();
+            //cmd.CommandType = CommandType.Text;
       //      cmd.CommandText = "insert into "+ wk_table_name + " values();
         }
 

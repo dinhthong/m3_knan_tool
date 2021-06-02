@@ -16,7 +16,7 @@ namespace labproject
         {
             InitializeComponent();
         }
-        string access_file_path, selected_table;
+       // string access_file_path, selected_table;
         private void btn_browsefile_Click(object sender, EventArgs e)
         {
             /**/
@@ -33,12 +33,12 @@ namespace labproject
              */
             if (openFileDialogacdb.ShowDialog() == DialogResult.OK)
             {
-                if (openFileDialogacdb.FileName != access_file_path)
-                { 
-                    access_file_path = openFileDialogacdb.FileName;
+                if (openFileDialogacdb.FileName != Properties.Settings.Default.access_file_path)
+                {
+                    Properties.Settings.Default.access_file_path = openFileDialogacdb.FileName;
                    // txt_filepath.Text = openFileDialogacdb.FileName;
-                    Properties.Settings.Default.access_file_path = access_file_path;
-                    Properties.Settings.Default.Save();
+                    //Properties.Settings.Default.access_file_path = access_file_path;
+                    myAppUtilities.save_settings();
                     cbb_tables_list.Items.Clear();
                   //  btn_read.Enabled = false;
                 }
@@ -61,12 +61,12 @@ namespace labproject
         private void FormConnect_Shown(object sender, EventArgs e)
         {
             txt_filepath.Text = Properties.Settings.Default.access_file_path;
-            access_file_path = Properties.Settings.Default.access_file_path;
-            selected_table = Properties.Settings.Default.access_table_name;
-            if (access_file_path != null) {
+          //  access_file_path = Properties.Settings.Default.access_file_path;
+           // selected_table = Properties.Settings.Default.access_table_name;
+            if (Properties.Settings.Default.access_file_path != null) {
                 try
                 {
-                    myAppUtilities.connec_to_accdb(access_file_path);
+                    myAppUtilities.connec_to_accdb(Properties.Settings.Default.access_file_path);
                     myAppUtilities.get_connection().Open();
                     /*
                      Show list of tables and bind to combobox
@@ -90,7 +90,7 @@ namespace labproject
                      //   Console.WriteLine("Table " + i + userTables.Rows[i][2].ToString());
                         cbb_tables_list.Items.Add(userTables.Rows[i][2].ToString());
                     }
-                    cbb_tables_list.SelectedIndex = tableNames.IndexOf(selected_table); ;
+                    cbb_tables_list.SelectedIndex = tableNames.IndexOf(Properties.Settings.Default.access_table_name); ;
                 }
                 catch (Exception ex)
                 {
@@ -109,7 +109,7 @@ namespace labproject
         private void btc_connectdb_Click(object sender, EventArgs e)
         {
             cbb_tables_list.Items.Clear();
-            myAppUtilities.connec_to_accdb(access_file_path);
+            myAppUtilities.connec_to_accdb(Properties.Settings.Default.access_file_path);
             myAppUtilities.get_connection().Open();
             /*
              Show list of tables and bind to combobox
@@ -138,7 +138,8 @@ namespace labproject
 
         private void btn_select_table_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default.access_table_name = cbb_tables_list.GetItemText(this.cbb_tables_list.SelectedItem); ;
+            Properties.Settings.Default.access_table_name = cbb_tables_list.GetItemText(this.cbb_tables_list.SelectedItem);
+            myAppUtilities.save_settings();
         }
     }
 }
