@@ -136,7 +136,10 @@ namespace labproject
         }
 
         DataTable dtContent = new DataTable();
-        TextBox txt = new TextBox();
+        
+
+        List<TextBox> myTextboxList = new List<TextBox>();
+
         void load_database()
         {
             try
@@ -165,15 +168,45 @@ namespace labproject
                 //  this.Controls.Add(txt);
                 //  //this.show();
                 //  // }
+
+                //myTextBoxList.Add(TextBox1);
+                //myTextBoxList.Add(TextBox2);
+                //mytextBoxList.Add(TextBox3);
+
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
         }
-
+        /*
+         * Dynamically create array of textboxes in C#
+         * https://stackoverflow.com/questions/9368748/dynamically-create-multiple-textboxes-c-sharp
+         https://stackoverflow.com/questions/18092711/textbox-not-showing-in-winforms-form
+           It always solve my previous error (object reference not set to an instance of an object.') when trying to loop:
+         */
         private void btn_test_Click(object sender, EventArgs e)
         {
+            //TextBox txt = new TextBox();
+            //txt.Location = new Point(172, 32);
+            //txt.Name = "textBox1";
+            //txt.Text = "helloo";
+            //txt.Visible = true;
+
+            TextBox[] txtTeamNames = new TextBox[5];
+            for (int i = 0; i < txtTeamNames.Length; i++)
+            {
+                var txt = new TextBox();
+                txtTeamNames[i] = txt;
+                txt.Name = "txtbox" + Convert.ToString(i);
+                txt.Text = Convert.ToString(i);
+                txt.Location = new Point(172, 32 + (i * 28));
+                txt.Visible = true;
+                this.Controls.Add(txt);
+                Console.WriteLine("Create text box {0}", i);
+                txt.BringToFront();
+            }
         }
         private DataTable GetTableContent()
         {
