@@ -10,7 +10,6 @@ using System.Windows.Forms;
 using System.Data.OleDb;
 using System.IO;
 using Excel = Microsoft.Office.Interop.Excel;
-//using labproject;
 
 namespace labproject
 {
@@ -18,8 +17,6 @@ namespace labproject
     {
         DataTable vt = new DataTable();
         string constr;
-        string ace_file_path;
-        //string wk_table_name = "serial_tong_the";
         public Form1()
         {
             InitializeComponent();
@@ -42,8 +39,7 @@ namespace labproject
         OleDbConnection conn;
         private void connectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            myAppUtilities.connec_to_accdb(ace_file_path);
-           // conn = new OleDbConnection(constr);         // establishes connection to the database
+            myAppUtilities.connec_to_accdb(Properties.Settings.Default.access_file_path);
             disconnectToolStripMenuItem.Enabled = true;
             connectToolStripMenuItem.Enabled = false;
             FormConnect formconnect = new FormConnect();
@@ -52,9 +48,7 @@ namespace labproject
 
         private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // OleDbConnection conn = new OleDbConnection(constr);
-            //conn.Close();
-            myAppUtilities.disconnec_to_accdb(ace_file_path);
+            myAppUtilities.disconnec_to_accdb(Properties.Settings.Default.access_file_path);
             disconnectToolStripMenuItem.Enabled = false;
             connectToolStripMenuItem.Enabled = true;
         }
@@ -132,210 +126,54 @@ namespace labproject
         {
 
         }
-        string logfile_txt_path;
-        string logfile_name = "knan_app_log.txt";
+        
         private void Form1_Shown(object sender, EventArgs e)
         {
-
-            constr = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" + ace_file_path + ";Persist Security Info=False";
-            ace_file_path = Properties.Settings.Default.access_file_path;
-            Console.WriteLine(Properties.Settings.Default.log_file_path);
-            logfile_txt_path = Properties.Settings.Default.log_file_path;
-
-            /*
-             Create new config file if not exist
-            */
-            if (!File.Exists(logfile_txt_path))
-            {
-                Console.WriteLine("File does not exist. Creating a new file");
-                /*
-                 Scan Drive on computer 
-                https://stackoverflow.com/questions/5195653/how-to-get-all-drives-in-pc-with-net-using-c-sharp
-                 */
-                foreach (var drive in DriveInfo.GetDrives())
-                {
-                    Console.WriteLine("Drive Type: {0}", drive.Name);
-                    Console.WriteLine("Drive Size: {0}", drive.TotalSize);
-                    if (drive.Name != @"C:\" && drive.TotalSize > 50000)
-                    {
-                        logfile_txt_path = drive.Name + logfile_name;
-                        Properties.Settings.Default.log_file_path = logfile_txt_path;
-                        myAppUtilities.save_settings();
-                        break;
-                    }
-                }
-                Console.WriteLine("Create file {0}", logfile_txt_path);
-                File.CreateText(logfile_txt_path);
-            }
-            else
-            {
-                Console.WriteLine("File already exists");
-                /*
-                 Read the first line as excel file path.
-                 */
-            }
-            //txt_filepath.Text = Properties.Settings.Default.excel_file_path;
-            //access_file_path = Properties.Settings.Default.excel_file_path;
-            //txt_input_serial.Text = Properties.Settings.Default.char_template;
-            //inputCol = Properties.Settings.Default.input_col;
-            //outputCol = Properties.Settings.Default.output_col;
-            write_new_log_message("New login");
-            myAppUtilities.connec_to_accdb(ace_file_path);
+            constr = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" + Properties.Settings.Default.access_file_path + ";Persist Security Info=False";
+            check_and_create_logfile_atshown();
+            myAppUtilities.connec_to_accdb(Properties.Settings.Default.access_file_path);
             load_database();
         }
 
-        private void write_new_log_message(string input)
-        {
-            File.AppendAllText(logfile_txt_path, DateTime.Now.ToString("MM/dd/yyyy h:mm tt: ") + input + Environment.NewLine);
-        }
-
-        //DataTable pre_GridData;
         DataTable dtContent = new DataTable();
-
+        TextBox txt = new TextBox();
         void load_database()
         {
             try
             {
                 myAppUtilities.get_connection().Open();
-                //string strSQL = "SELECT * FROM serial_tong_the";
-                //OleDbCommand command = new OleDbCommand(strSQL, conn);
-                // Open the connection and execute the select command.    
-                /*
-                 Get all the tables and column fields in the access database
+                get_Tables_from_conn();
+                load_DataTable_to_GridView(Properties.Settings.Default.access_table_name);
+                //  txt.Location = new Point(30, 40);
 
-                https://stackoverflow.com/questions/15978225/how-to-get-all-table-names-and-also-column-name-using-c-sharp-in-ms-access
-                 */
-                DataTable schema = myAppUtilities.get_connection().GetSchema("Columns");
-                foreach (DataRow row in schema.Rows)
-                    Console.WriteLine("TABLE:" + row.Field<string>("TABLE_NAME") +
-                                      " COLUMN:" + row.Field<string>("COLUMN_NAME"));
-
-                /*
-                 Get usertable:
-                https://stackoverflow.com/questions/1699897/retrieve-list-of-tables-in-ms-access-file
-                 */
-                // We only want user tables, not system tables
-                string[] restrictions = new string[4];
-                restrictions[3] = "Table";
-
-                DataTable userTables = myAppUtilities.get_connection().GetSchema("Tables", restrictions);
-
-                List<string> tableNames = new List<string>();
-                Console.WriteLine("Print all the tables in the access database:");
-                for (int i = 0; i < userTables.Rows.Count; i++)
-                {
-                    tableNames.Add(userTables.Rows[i][2].ToString());
-                    Console.WriteLine("Table " + i + userTables.Rows[i][2].ToString());
-                }
-                /*
-                 Fetch all columns (data name) in an specific Access Table:
-                    https://stackoverflow.com/questions/3775047/fetch-column-names-for-specific-table
-                 */
-                using (var cmd = new OleDbCommand("select * from " + Properties.Settings.Default.access_table_name, myAppUtilities.get_connection()))
-                using (var reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly))
-                {
-                    var table = reader.GetSchemaTable();
-                    var nameCol = table.Columns["ColumnName"];
-                    foreach (DataRow row in table.Rows)
-                    {
-                        Console.WriteLine(row[nameCol]);
-                    }
-                }
-                /*
-                 Load Data (Table Content) Into DataGridView From Access Database.
-                    https://www.youtube.com/watch?v=Uc8BuvMQIfI&ab_channel=Tech%26TravelTV
-                 */
-
-                using (var cmd = new OleDbCommand("select * from " + Properties.Settings.Default.access_table_name, myAppUtilities.get_connection()))
-                {
-                    OleDbDataReader reader = cmd.ExecuteReader();
-                    dtContent.Load(reader);
-                }
-
-
-                // pre_GridData = dtContent;
-                /*
-                 get pointer to the DataSource
-                 */
-                dataGridView1.DataSource = dtContent;
+                //  //   for (int i = 0; i <= userTables.Rows.Count; i++)
+                //  // {
+                //  //txt[i].Height = 40;
+                //  //txt[i].Width = 300;
+                //  //txt[i] = new TextBox();
+                //  //txt[i].Text = tableNames[i];
+                //  //txt[i].Name = tableNames[i];
+                //  //if (i > 0)
+                //  //{
+                //  //    txt[i].Left = txt[i - 1].Right;
+                //  //}
+                //  txt.Height = 40;
+                //  txt.Width = 300;
+                ////  txt = new textbox();
+                //  txt.Text = tableNames[0];
+                //  txt.Name = tableNames[0];
+                //  this.Controls.Add(txt);
+                //  //this.show();
+                //  // }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
         }
+
         private void btn_test_Click(object sender, EventArgs e)
         {
-            //try
-            //{
-            //    conn.Open();
-            //    //string strSQL = "SELECT * FROM serial_tong_the";
-            //    //OleDbCommand command = new OleDbCommand(strSQL, conn);
-            //    // Open the connection and execute the select command.    
-            //    /*
-            //     Get all the tables and column fields in the access database
-
-            //    https://stackoverflow.com/questions/15978225/how-to-get-all-table-names-and-also-column-name-using-c-sharp-in-ms-access
-            //     */
-            //    DataTable schema = conn.GetSchema("Columns");
-            //    foreach (DataRow row in schema.Rows)
-            //        Console.WriteLine("TABLE:" + row.Field<string>("TABLE_NAME") +
-            //                          " COLUMN:" + row.Field<string>("COLUMN_NAME"));
-
-            //    /*
-            //     Get usertable:
-            //    https://stackoverflow.com/questions/1699897/retrieve-list-of-tables-in-ms-access-file
-            //     */
-            //    // We only want user tables, not system tables
-            //    string[] restrictions = new string[4];
-            //    restrictions[3] = "Table";
-
-            //    DataTable userTables = conn.GetSchema("Tables", restrictions);
-
-            //    List<string> tableNames = new List<string>();
-            //    Console.WriteLine("Print all the tables in the access database:");
-            //    for (int i = 0; i < userTables.Rows.Count; i++)
-            //    {
-            //        tableNames.Add(userTables.Rows[i][2].ToString());
-            //        Console.WriteLine("Table "+i+ userTables.Rows[i][2].ToString());
-            //    }
-            //    /*
-            //     Fetch all columns (data name) in an specific Access Table:
-            //        https://stackoverflow.com/questions/3775047/fetch-column-names-for-specific-table
-            //     */
-            //    using (var cmd = new OleDbCommand("select * from " + wk_table_name, conn))
-            //    using (var reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly))
-            //    {
-            //        var table = reader.GetSchemaTable();
-            //        var nameCol = table.Columns["ColumnName"];
-            //        foreach (DataRow row in table.Rows)
-            //        {
-            //            Console.WriteLine(row[nameCol]);
-            //        }
-            //    }
-            //    /*
-            //     Load Data (Table Content) Into DataGridView From Access Database.
-            //        https://www.youtube.com/watch?v=Uc8BuvMQIfI&ab_channel=Tech%26TravelTV
-            //     */
-                
-            //    using (var cmd = new OleDbCommand("select * from "+ wk_table_name, conn))
-            //    {
-            //        OleDbDataReader reader = cmd.ExecuteReader();
-            //        dtContent.Load(reader);
-            //    }
-
-
-            //   // pre_GridData = dtContent;
-            //    /*
-            //     get pointer to the DataSource
-            //     */
-            //    dataGridView1.DataSource = dtContent;
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine(ex.Message);
-            //}
-            
         }
         private DataTable GetTableContent()
         {
@@ -384,15 +222,6 @@ namespace labproject
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
-        }
-        /*
-         Create a proper 2D int list in C#
-         https://stackoverflow.com/questions/665299/are-2-dimensional-lists-possible-in-c
-         */
-        public class CellPosition
-        {
-            public int row { get; set; }
-            public int col { get; set; }
         }
 
         private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -468,47 +297,113 @@ namespace labproject
         private void btn_excel_Click(object sender, EventArgs e)
         {
             excel_file_path = Application.StartupPath + @"\..\.." + @"\Database1.xlsx";
-            // toExcelFile();
             dtContent.ExportToExcel(excel_file_path);
         }
-       
-        public void toExcelFile()
-        {
-            //Create COM Objects. Create a COM object for everything that is referenced
-            Excel.Application xlApp = new Excel.Application();
-            excel_file_path = Application.StartupPath + @"\..\.." + @"\Database.xlsx";
-            Console.WriteLine(excel_file_path);
-            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(excel_file_path);
-            //Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(@"E:\Cuahang_ap\Database.xlsx");
-            //Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
-            //Excel.Range xlRange = xlWorksheet.UsedRange;
-            //decode = new string[rowCount, colCount];
-            //rowCount = xlRange.Rows.Count;
-            //colCount = xlRange.Columns.Count;
-            //iterate over the rows and columns and print to the console as it appears in the file
-            //excel is not zero based!!
-            //for (int i = rowCount + 1; i <= rowCount + productList.Count; i++)
-            //{
-            //    xlRange.Cells[i, 1].Value2 = productList[i - rowCount - 1].Name;
-            //    xlRange.Cells[i, 2].Value2 = productList[i - rowCount - 1].Image_url;
-            //    xlRange.Cells[i, 3].Value2 = productList[i - rowCount - 1].Product_url;
-            //    xlRange.Cells[i, 4].Value2 = productList[i - rowCount - 1].Price;
-            //}
-            xlWorkbook.Worksheets.Add(dtContent, "Sheet1");
 
-            //cleanup
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            //rule of thumb for releasing com objects:
-            //  never use two dots, all COM objects must be referenced and released individually
-            //  ex: [somthing].[something].[something] is bad
-            //  Console.WriteLine(decode[0, 0] + decode[1, 1]);
-            //close and release
-            xlWorkbook.Close();
-            //quit and release
-            xlApp.Quit();
+        private void get_Tables_from_conn()
+        {
+            /*
+             Get usertable:
+            https://stackoverflow.com/questions/1699897/retrieve-list-of-tables-in-ms-access-file
+             */
+            // We only want user tables, not system tables
+            string[] restrictions = new string[4];
+            restrictions[3] = "Table";
+
+            DataTable userTables = myAppUtilities.get_connection().GetSchema("Tables", restrictions);
+
+            List<string> tableNames = new List<string>();
+            Console.WriteLine("Print all the tables in the access database:");
+            for (int i = 0; i < userTables.Rows.Count; i++)
+            {
+                tableNames.Add(userTables.Rows[i][2].ToString());
+                Console.WriteLine("Table " + i + ": " + userTables.Rows[i][2].ToString());
+            }
         }
-      
+        private void load_DataTable_to_GridView(string table_name)
+        {
+            /*
+              get Column schema of the table
+            */
+            using (var cmd = new OleDbCommand("select * from " + table_name, myAppUtilities.get_connection()))
+            using (var reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly))
+            {
+                var table = reader.GetSchemaTable();
+                var nameCol = table.Columns["ColumnName"];
+                foreach (DataRow row in table.Rows)
+                {
+                    Console.WriteLine(row[nameCol]);
+                }
+            }
+            /*
+             Load Data (Table Content) Into DataGridView From Access Database.
+                https://www.youtube.com/watch?v=Uc8BuvMQIfI&ab_channel=Tech%26TravelTV
+             */
+
+            using (var cmd = new OleDbCommand("select * from " + table_name, myAppUtilities.get_connection()))
+            {
+                OleDbDataReader reader = cmd.ExecuteReader();
+                dtContent.Load(reader);
+            }
+            /*
+                get pointer to the DataSource
+            */
+            dataGridView1.DataSource = dtContent;
+        }
+
+        private void check_and_create_logfile_atshown()
+        {
+            /*
+                Create new config file if not exist
+            */
+            string logfile_txt_path;
+            string logfile_name = "knan_app_log.txt";
+            logfile_txt_path = Properties.Settings.Default.log_file_path;
+            if (!File.Exists(logfile_txt_path))
+            {
+                Console.WriteLine("File does not exist. Creating a new file");
+                /*
+                 Scan Drive on computer 
+                https://stackoverflow.com/questions/5195653/how-to-get-all-drives-in-pc-with-net-using-c-sharp
+                 */
+                foreach (var drive in DriveInfo.GetDrives())
+                {
+                    Console.WriteLine("Drive Type: {0}", drive.Name);
+                    Console.WriteLine("Drive Size: {0}", drive.TotalSize);
+                    if (drive.Name != @"C:\" && drive.TotalSize > 50000)
+                    {
+                        logfile_txt_path = drive.Name + logfile_name;
+                        Properties.Settings.Default.log_file_path = logfile_txt_path;
+                        myAppUtilities.save_settings();
+                        break;
+                    }
+                }
+                Console.WriteLine("Create file {0}", logfile_txt_path);
+                File.CreateText(logfile_txt_path);
+            }
+            else
+            {
+                Console.WriteLine("File already exists");
+                /*
+                 Read the first line as excel file path.
+                 */
+            }
+            Console.WriteLine("Log txt file path is: {0}", Properties.Settings.Default.log_file_path);
+            write_new_log_message("New login");
+        }
+        private void write_new_log_message(string input)
+        {
+            File.AppendAllText(Properties.Settings.Default.log_file_path, DateTime.Now.ToString("MM/dd/yyyy h:mm tt: ") + input + Environment.NewLine);
+        }
+        /*
+         Create a proper 2D int list in C#
+         https://stackoverflow.com/questions/665299/are-2-dimensional-lists-possible-in-c
+         */
+        public class CellPosition
+        {
+            public int row { get; set; }
+            public int col { get; set; }
+        }
 
     }
 }

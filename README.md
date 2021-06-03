@@ -9,17 +9,23 @@ Features of db app:
 - Delete record
 - File > Exit Application
 
-# Todos
-- Get data from a Table as DataTable type  -> Use GridView to display the data on C# app
-- C# Application - Insert Delete Update Select in MS Access Database: https://www.youtube.com/watch?v=uONQaT-nwls&ab_channel=FoxLearnFoxLearn: Add search feature,
-- Add log file (refer to my other project)
-- Export data to Excel file
-- Import data feature, if the data format is persistent and it complies with the database schema.
-# App design
-- 
+# Todo tasks
+- A method for getting and setting Settings.settings Default values, instead of current long access commands.
 
-# DataGrid feature
+# Application design (behaviors)
+## Completed features
+- Load the selected database and table at startup
+- Get data from a Table as DataTable type  -> Use GridView to display the data on C# app
+- Export data to Excel file
+- Flexibly choose the Access database and table
+## Todos features
+- Import data feature, if the data format is persistent and it complies with the database schema.
+
+### DataGrid feature
 - Disable editing first column (ID). The data of this column is automatically updated when user inserts a new row.
 - If the value of previous changed cells is zero -> No need for specify the change reason, the update is valid.
 - Perform data validation and show input errors (if any) when user inputs data to the Table, so user must correct before the next SAVE button click. Note that the program might already performs this when we define the data structure for the Column Schema  
 - Trying to update ID column value -> doesn't take effect. The program will discard this, and auto fill field in the next DataGrid Update
+
+# Preferences, links and resources
+- C# Application - Insert Delete Update Select in MS Access Database: https://www.youtube.com/watch?v=uONQaT-nwls&ab_channel=FoxLearnFoxLearn: Add search feature.

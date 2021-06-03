@@ -64,7 +64,7 @@
             this.commandToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(971, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1154, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -242,7 +242,7 @@
             // 
             // btn_excel
             // 
-            this.btn_excel.Location = new System.Drawing.Point(757, 473);
+            this.btn_excel.Location = new System.Drawing.Point(716, 457);
             this.btn_excel.Name = "btn_excel";
             this.btn_excel.Size = new System.Drawing.Size(75, 23);
             this.btn_excel.TabIndex = 12;
@@ -263,7 +263,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(971, 575);
+            this.ClientSize = new System.Drawing.Size(1154, 586);
             this.Controls.Add(this.btn_insert);
             this.Controls.Add(this.btn_excel);
             this.Controls.Add(this.btn_search);
