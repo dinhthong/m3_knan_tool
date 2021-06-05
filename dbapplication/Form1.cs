@@ -26,11 +26,11 @@ namespace labproject
         private void Form1_Load(object sender, EventArgs e)
         {
 
-            disconnectToolStripMenuItem.Enabled = false;
-            runQueryToolStripMenuItem.ShortcutKeys = Keys.F5;
-            insertRecordToolStripMenuItem.ShortcutKeys = Keys.F6;
-            updateRecordToolStripMenuItem.ShortcutKeys = Keys.F7;
-            deleteRecordToolStripMenuItem.ShortcutKeys = Keys.F8;
+            //disconnectToolStripMenuItem.Enabled = false;
+            //runQueryToolStripMenuItem.ShortcutKeys = Keys.F5;
+            //insertRecordToolStripMenuItem.ShortcutKeys = Keys.F6;
+            //updateRecordToolStripMenuItem.ShortcutKeys = Keys.F7;
+            //deleteRecordToolStripMenuItem.ShortcutKeys = Keys.F8;
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -38,15 +38,16 @@ namespace labproject
             this.Close();
         }
         OleDbConnection conn;
-        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            myAppUtilities.connec_to_accdb(Properties.Settings.Default.access_file_path);
-            disconnectToolStripMenuItem.Enabled = true;
-            connectToolStripMenuItem.Enabled = false;
-            FormConnect formconnect = new FormConnect();
-            formconnect.Show();
-            formconnect.FormClosed += new FormClosedEventHandler(formconnectForm_FormClosed);
-        }
+        //private void connectToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    myAppUtilities.connec_to_accdb(Properties.Settings.Default.access_file_path);
+        //    //disconnectToolStripMenuItem.Enabled = true;
+        //    //connectToolStripMenuItem.Enabled = false;
+        //    FormConnect formconnect = new FormConnect();
+        //    formconnect.Show();
+        //    formconnect.FormClosed += new FormClosedEventHandler(formconnectForm_FormClosed);
+        //}
+        string error_table_name = "loi_tb_tongthe";
         private void formconnectForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             //txt_input_serial.Text = Properties.Settings.Default.char_template;
@@ -56,6 +57,7 @@ namespace labproject
              */
             Console.WriteLine("Event: Form closed in the parent");
             load_DataTable_to_GridView(Properties.Settings.Default.access_table_name);
+            load_DataTable_to_GridView_err(error_table_name);
             //dataGridView1.Reset
             //dataGridView1.ResetBindings();
             //dataGridView1.Update();
@@ -63,81 +65,81 @@ namespace labproject
             get_Columns_list_from_con_table(Properties.Settings.Default.access_table_name);
 
         }
-        private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            myAppUtilities.disconnec_to_accdb(Properties.Settings.Default.access_file_path);
-            disconnectToolStripMenuItem.Enabled = false;
-            connectToolStripMenuItem.Enabled = true;
-        }
+        //private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    myAppUtilities.disconnec_to_accdb(Properties.Settings.Default.access_file_path);
+        //    //disconnectToolStripMenuItem.Enabled = false;
+        //    //connectToolStripMenuItem.Enabled = true;
+        //}
 
-        private void runQueryToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string sqlstr = textBoxQuery.Text;
-            if (connectToolStripMenuItem.Enabled == false)
-            {
-                try
-                {
-                    OleDbDataAdapter da = new OleDbDataAdapter(sqlstr, constr);
-                    da.Fill(vt);
-                    da.Dispose();
-                    dataGridViewQuery.DataSource = null;
-                    dataGridViewQuery.Refresh();
-                    dataGridViewQuery.Rows.Clear();
-                    dataGridViewQuery.DataSource = vt;
-                }
-                catch (Exception ar)
-                {
-                    MessageBox.Show(ar.Message);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Please connect to the database first!");
-            }
-        }
+        //private void runQueryToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    string sqlstr = textBoxQuery.Text;
+        //    if (connectToolStripMenuItem.Enabled == false)
+        //    {
+        //        try
+        //        {
+        //            OleDbDataAdapter da = new OleDbDataAdapter(sqlstr, constr);
+        //            da.Fill(vt);
+        //            da.Dispose();
+        //            dataGridViewQuery.DataSource = null;
+        //            dataGridViewQuery.Refresh();
+        //            dataGridViewQuery.Rows.Clear();
+        //            dataGridViewQuery.DataSource = vt;
+        //        }
+        //        catch (Exception ar)
+        //        {
+        //            MessageBox.Show(ar.Message);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Please connect to the database first!");
+        //    }
+        //}
 
-        private void updateRecordToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (connectToolStripMenuItem.Enabled == false)
-            {
-                FormUpdate formupdate = new FormUpdate();
-                formupdate.Show();
-                this.Visible = false;
-            }
-            else
-            {
-                MessageBox.Show("Please connect to the database first!");
-            }
-        }
+        //private void updateRecordToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    if (connectToolStripMenuItem.Enabled == false)
+        //    {
+        //        FormUpdate formupdate = new FormUpdate();
+        //        formupdate.Show();
+        //        this.Visible = false;
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Please connect to the database first!");
+        //    }
+        //}
 
-        private void insertRecordToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        //private void insertRecordToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
 
-            if (connectToolStripMenuItem.Enabled == false)
-            {
-                FormInsert forminsert = new FormInsert();
-                forminsert.Show();
-                this.Visible = false;
-            }
-            else
-            {
-                MessageBox.Show("Please connect to the database first!");
-            }
-        }
+        //    if (connectToolStripMenuItem.Enabled == false)
+        //    {
+        //        FormInsert forminsert = new FormInsert();
+        //        forminsert.Show();
+        //        this.Visible = false;
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Please connect to the database first!");
+        //    }
+        //}
 
-        private void deleteRecordToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (connectToolStripMenuItem.Enabled == false)
-            {
-                FormDelete formdelete = new FormDelete();
-                formdelete.Show();
-                this.Visible = false;
-            }
-            else
-            {
-                MessageBox.Show("Please connect to the database first!");
-            }
-        }
+        //private void deleteRecordToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    if (connectToolStripMenuItem.Enabled == false)
+        //    {
+        //        FormDelete formdelete = new FormDelete();
+        //        formdelete.Show();
+        //        this.Visible = false;
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Please connect to the database first!");
+        //    }
+        //}
 
         private void dataGridViewQuery_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -165,6 +167,7 @@ namespace labproject
                 get_Tables_list_from_conn();
                 get_Columns_list_from_con_table(Properties.Settings.Default.access_table_name);
                 load_DataTable_to_GridView(Properties.Settings.Default.access_table_name);
+                load_DataTable_to_GridView_err(error_table_name);
                 //  txt.Location = new Point(30, 40);
 
                 //  //   for (int i = 0; i <= userTables.Rows.Count; i++)
@@ -212,11 +215,13 @@ namespace labproject
                 txtTeamNames[i] = txt;
                 txt.Name = "txtbox" + Convert.ToString(i);
                 txt.Text = Convert.ToString(i);
-                txt.Location = new Point(172, 32 + (i * 28));
+                txt.Location = new Point(172, 90 + (i * 28));
                 txt.Visible = true;
-                this.Controls.Add(txt);
+                this.tabPage2.Controls.Add(txt);
+                //this.Controls.Add(txt);
                 Console.WriteLine("Create text box {0}", i);
                 txt.BringToFront();
+
             }
         }
         //private DataTable GetTableContent()
@@ -385,9 +390,28 @@ namespace labproject
             }
             ccb_column_list.SelectedIndex = 1;
         }
+
+
+            
+            private void load_DataTable_to_GridView_err(string table_name)
+            {
+                /*
+                 Method 2
+                https://stackoverflow.com/questions/15149491/how-to-display-data-in-datagridview-from-access-database/34288085
+                 */
+                string query = "SELECT * From " + table_name;
+                //ds.Clear();
+                using (OleDbDataAdapter table_Adapter = new OleDbDataAdapter(query, myAppUtilities.get_connection()))
+                {
+                    DataSet ds = new DataSet();
+                    table_Adapter.Fill(ds);
+                    dataGridView_err.DataSource = ds.Tables[0];
+                }
+            }
+
         private void load_DataTable_to_GridView(string table_name)
         {
-            dataGridView1.DataSource = null;
+            //dataGridView1.DataSource = null;
             /*
              Method 1
              */
@@ -465,5 +489,22 @@ namespace labproject
             public int col { get; set; }
         }
 
+        private void btn_Connect_Click(object sender, EventArgs e)
+        {
+            myAppUtilities.connec_to_accdb(Properties.Settings.Default.access_file_path);
+            FormConnect formconnect = new FormConnect();
+            formconnect.Show();
+            formconnect.FormClosed += new FormClosedEventHandler(formconnectForm_FormClosed);
+        }
+
+        private void btn_adderr_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tabPage2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
