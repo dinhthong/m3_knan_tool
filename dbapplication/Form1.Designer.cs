@@ -51,6 +51,7 @@
             this.btn_search = new System.Windows.Forms.Button();
             this.btn_excel = new System.Windows.Forms.Button();
             this.btn_insert = new System.Windows.Forms.Button();
+            this.ccb_column_list = new System.Windows.Forms.ComboBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewQuery)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -259,11 +260,20 @@
             this.btn_insert.Text = "insert";
             this.btn_insert.UseVisualStyleBackColor = true;
             // 
+            // ccb_column_list
+            // 
+            this.ccb_column_list.FormattingEnabled = true;
+            this.ccb_column_list.Location = new System.Drawing.Point(490, 226);
+            this.ccb_column_list.Name = "ccb_column_list";
+            this.ccb_column_list.Size = new System.Drawing.Size(186, 21);
+            this.ccb_column_list.TabIndex = 14;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1154, 586);
+            this.Controls.Add(this.ccb_column_list);
             this.Controls.Add(this.btn_insert);
             this.Controls.Add(this.btn_excel);
             this.Controls.Add(this.btn_search);
@@ -317,6 +327,7 @@
         private System.Windows.Forms.Button btn_search;
         private System.Windows.Forms.Button btn_excel;
         private System.Windows.Forms.Button btn_insert;
+        private System.Windows.Forms.ComboBox ccb_column_list;
     }
 }
 

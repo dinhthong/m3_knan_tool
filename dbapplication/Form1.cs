@@ -198,11 +198,6 @@ namespace labproject
          */
         private void btn_test_Click(object sender, EventArgs e)
         {
-            //TextBox txt = new TextBox();
-            //txt.Location = new Point(172, 32);
-            //txt.Name = "textBox1";
-            //txt.Text = "helloo";
-            //txt.Visible = true;
             SystemSounds.Hand.Play();
             TextBox[] txtTeamNames = new TextBox[5];
             for (int i = 0; i < txtTeamNames.Length; i++)
@@ -318,20 +313,16 @@ namespace labproject
                 dataGridView1.Rows.RemoveAt(item.Index);
             }
         }
-
+        DataSet ds = new DataSet();
         private void btn_search_Click(object sender, EventArgs e)
         {
-            //{
-            //    if (string.IsNullOrEmpty(txt_search.Text))
-            //        dataGridView1.DataSource = dtContent;
-            //    else
-            //    {
-            //        var query = from o in dtContent.AsEnumerable()
-            //                    where o.Field<double>("STT_TB") == Convert.ToInt32(txt_search.Text)
-            //                    select o;
-            //        dataGridView1.DataSource = query.ToList();
-            //    }
-            //}
+            string search_column = conn_info.columnNames[ccb_column_list.SelectedIndex];
+            /*
+             * https://stackoverflow.com/questions/31809201/how-to-use-textbox-to-search-data-in-data-grid-view
+             * https://stackoverflow.com/questions/25392682/error-cannot-perform-like-operation-on-system-int32-and-system-string-sett
+             */
+            (dataGridView1.DataSource as DataTable).DefaultView.RowFilter = string.Format("convert("+ search_column + ", 'System.String') LIKE '%{0}%'", txt_search.Text);
+
         }
         string excel_file_path;
         /*
@@ -350,6 +341,7 @@ namespace labproject
 
             public List<string> tableNames = new List<string>();
             public List<string> columnNames = new List<string>();
+          //  public string selected_table;
         }
 
         private void get_Tables_list_from_conn()
@@ -382,8 +374,10 @@ namespace labproject
                 {
                     Console.WriteLine(row[nameCol]);
                     conn_info.columnNames.Add(row[nameCol].ToString());
+                    ccb_column_list.Items.Add(row[nameCol].ToString());
                 }
             }
+            ccb_column_list.SelectedIndex = 1;
         }
         private void load_DataTable_to_GridView(string table_name)
         {
@@ -401,10 +395,10 @@ namespace labproject
             https://stackoverflow.com/questions/15149491/how-to-display-data-in-datagridview-from-access-database/34288085
              */
             string query = "SELECT * From "+ table_name;
-            DataSet ds = new DataSet();
-            using (OleDbDataAdapter adapter = new OleDbDataAdapter(query, myAppUtilities.get_connection()))
+            
+            using (OleDbDataAdapter table_Adapter = new OleDbDataAdapter(query, myAppUtilities.get_connection()))
             { 
-                    adapter.Fill(ds);
+                table_Adapter.Fill(ds);
                 dataGridView1.DataSource = ds.Tables[0];
             }
         }
