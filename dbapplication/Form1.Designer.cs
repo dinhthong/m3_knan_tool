@@ -164,7 +164,7 @@
             // 
             // btn_test
             // 
-            this.btn_test.Location = new System.Drawing.Point(716, 248);
+            this.btn_test.Location = new System.Drawing.Point(805, 240);
             this.btn_test.Name = "btn_test";
             this.btn_test.Size = new System.Drawing.Size(75, 23);
             this.btn_test.TabIndex = 4;
@@ -177,7 +177,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(12, 265);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(658, 231);
+            this.dataGridView1.Size = new System.Drawing.Size(740, 286);
             this.dataGridView1.TabIndex = 5;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             this.dataGridView1.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDoubleClick);
@@ -187,7 +187,7 @@
             // 
             // btn_save
             // 
-            this.btn_save.Location = new System.Drawing.Point(716, 306);
+            this.btn_save.Location = new System.Drawing.Point(805, 298);
             this.btn_save.Name = "btn_save";
             this.btn_save.Size = new System.Drawing.Size(75, 23);
             this.btn_save.TabIndex = 6;
@@ -197,7 +197,7 @@
             // 
             // btn_del
             // 
-            this.btn_del.Location = new System.Drawing.Point(716, 357);
+            this.btn_del.Location = new System.Drawing.Point(805, 349);
             this.btn_del.Name = "btn_del";
             this.btn_del.Size = new System.Drawing.Size(75, 23);
             this.btn_del.TabIndex = 7;
@@ -242,7 +242,7 @@
             // 
             // btn_excel
             // 
-            this.btn_excel.Location = new System.Drawing.Point(716, 457);
+            this.btn_excel.Location = new System.Drawing.Point(805, 449);
             this.btn_excel.Name = "btn_excel";
             this.btn_excel.Size = new System.Drawing.Size(75, 23);
             this.btn_excel.TabIndex = 12;
@@ -252,7 +252,7 @@
             // 
             // btn_insert
             // 
-            this.btn_insert.Location = new System.Drawing.Point(52, 517);
+            this.btn_insert.Location = new System.Drawing.Point(805, 502);
             this.btn_insert.Name = "btn_insert";
             this.btn_insert.Size = new System.Drawing.Size(75, 23);
             this.btn_insert.TabIndex = 13;

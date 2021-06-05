@@ -11,6 +11,9 @@ Features of db app:
 
 # Todo tasks
 - A method for getting and setting Settings.settings Default values, instead of current long access commands.
+- Insert new input form, check the input conditions, if all the values are valid -> Allow save. Display error messages
+- Export Excel file with name:current date + table, show export messages.
+- Add search by column name feature
 
 # Application design (behaviors)
 ## Completed features
@@ -18,8 +21,12 @@ Features of db app:
 - Get data from a Table as DataTable type  -> Use GridView to display the data on C# app
 - Export data to Excel file
 - Flexibly choose the Access database and table
+- Lock device feature -> After a device is locked, it must be unlock (by priviledged user) to modify.
+
 ## Todos features
 - Import data feature, if the data format is persistent and it complies with the database schema.
+- Allow update the location of an item anytime.
+- Add project history
 
 ### DataGrid feature
 - Disable editing first column (ID). The data of this column is automatically updated when user inserts a new row.

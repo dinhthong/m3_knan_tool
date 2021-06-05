@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Data.OleDb;
 using System.IO;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Media;
 
 namespace labproject
 {
@@ -44,8 +45,18 @@ namespace labproject
             connectToolStripMenuItem.Enabled = false;
             FormConnect formconnect = new FormConnect();
             formconnect.Show();
+            formconnect.FormClosed += new FormClosedEventHandler(formconnectForm_FormClosed);
         }
-
+        private void formconnectForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            //txt_input_serial.Text = Properties.Settings.Default.char_template;
+            /*
+             @todos: check if the file path changes -> create new connection
+                       if the table_name changes -> reload GridView
+             */
+            Console.WriteLine("Set form closed in the parent");
+            load_DataTable_to_GridView(Properties.Settings.Default.access_table_name);
+        }
         private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             myAppUtilities.disconnec_to_accdb(Properties.Settings.Default.access_file_path);
@@ -145,7 +156,8 @@ namespace labproject
             try
             {
                 myAppUtilities.get_connection().Open();
-                get_Tables_from_conn();
+                get_Tables_list_from_conn();
+                get_Columns_list_from_con_table(Properties.Settings.Default.access_table_name);
                 load_DataTable_to_GridView(Properties.Settings.Default.access_table_name);
                 //  txt.Location = new Point(30, 40);
 
@@ -172,8 +184,6 @@ namespace labproject
                 //myTextBoxList.Add(TextBox1);
                 //myTextBoxList.Add(TextBox2);
                 //mytextBoxList.Add(TextBox3);
-
-
             }
             catch (Exception ex)
             {
@@ -193,7 +203,7 @@ namespace labproject
             //txt.Name = "textBox1";
             //txt.Text = "helloo";
             //txt.Visible = true;
-
+            SystemSounds.Hand.Play();
             TextBox[] txtTeamNames = new TextBox[5];
             for (int i = 0; i < txtTeamNames.Length; i++)
             {
@@ -332,31 +342,36 @@ namespace labproject
             excel_file_path = Application.StartupPath + @"\..\.." + @"\Database1.xlsx";
             dtContent.ExportToExcel(excel_file_path);
         }
-
-        private void get_Tables_from_conn()
+        connected_table conn_info = new connected_table();
+        public class connected_table
         {
-            /*
-             Get usertable:
-            https://stackoverflow.com/questions/1699897/retrieve-list-of-tables-in-ms-access-file
-             */
-            // We only want user tables, not system tables
+            public int row { get; set; }
+            public int col { get; set; }
+
+            public List<string> tableNames = new List<string>();
+            public List<string> columnNames = new List<string>();
+        }
+
+        private void get_Tables_list_from_conn()
+        {
             string[] restrictions = new string[4];
             restrictions[3] = "Table";
 
             DataTable userTables = myAppUtilities.get_connection().GetSchema("Tables", restrictions);
-
-            List<string> tableNames = new List<string>();
-            Console.WriteLine("Print all the tables in the access database:");
+            Console.WriteLine("**Print all the tables in the access database:");
             for (int i = 0; i < userTables.Rows.Count; i++)
             {
-                tableNames.Add(userTables.Rows[i][2].ToString());
+                conn_info.tableNames.Add(userTables.Rows[i][2].ToString());
                 Console.WriteLine("Table " + i + ": " + userTables.Rows[i][2].ToString());
             }
         }
-        private void load_DataTable_to_GridView(string table_name)
+
+        private void get_Columns_list_from_con_table(string table_name)
         {
+            Console.WriteLine("**Print all the columns in table {0}", table_name);
             /*
-              get Column schema of the table
+                get Column schema of the table
+                check if the table is correct (or handle exception)
             */
             using (var cmd = new OleDbCommand("select * from " + table_name, myAppUtilities.get_connection()))
             using (var reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly))
@@ -366,22 +381,32 @@ namespace labproject
                 foreach (DataRow row in table.Rows)
                 {
                     Console.WriteLine(row[nameCol]);
+                    conn_info.columnNames.Add(row[nameCol].ToString());
                 }
             }
+        }
+        private void load_DataTable_to_GridView(string table_name)
+        {
             /*
-             Load Data (Table Content) Into DataGridView From Access Database.
-                https://www.youtube.com/watch?v=Uc8BuvMQIfI&ab_channel=Tech%26TravelTV
+             Method 1
              */
+            //using (var cmd = new OleDbCommand("select * from " + table_name, myAppUtilities.get_connection()))
+            //{
+            //    OleDbDataReader reader = cmd.ExecuteReader();
+            //    dtContent.Load(reader);
+            //}
 
-            using (var cmd = new OleDbCommand("select * from " + table_name, myAppUtilities.get_connection()))
-            {
-                OleDbDataReader reader = cmd.ExecuteReader();
-                dtContent.Load(reader);
-            }
             /*
-                get pointer to the DataSource
-            */
-            dataGridView1.DataSource = dtContent;
+             Method 2
+            https://stackoverflow.com/questions/15149491/how-to-display-data-in-datagridview-from-access-database/34288085
+             */
+            string query = "SELECT * From "+ table_name;
+            DataSet ds = new DataSet();
+            using (OleDbDataAdapter adapter = new OleDbDataAdapter(query, myAppUtilities.get_connection()))
+            { 
+                    adapter.Fill(ds);
+                dataGridView1.DataSource = ds.Tables[0];
+            }
         }
 
         private void check_and_create_logfile_atshown()
