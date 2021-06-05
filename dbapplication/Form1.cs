@@ -54,8 +54,14 @@ namespace labproject
              @todos: check if the file path changes -> create new connection
                        if the table_name changes -> reload GridView
              */
-            Console.WriteLine("Set form closed in the parent");
+            Console.WriteLine("Event: Form closed in the parent");
             load_DataTable_to_GridView(Properties.Settings.Default.access_table_name);
+            //dataGridView1.Reset
+            //dataGridView1.ResetBindings();
+            //dataGridView1.Update();
+            //dataGridView1.Refresh();
+            get_Columns_list_from_con_table(Properties.Settings.Default.access_table_name);
+
         }
         private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -213,11 +219,11 @@ namespace labproject
                 txt.BringToFront();
             }
         }
-        private DataTable GetTableContent()
-        {
-            DataTable dtContent = new DataTable();
-            return dtContent;
-        }
+        //private DataTable GetTableContent()
+        //{
+        //    DataTable dtContent = new DataTable();
+        //    return dtContent;
+        //}
         List<CellPosition> data_change_cell_index = new List<CellPosition>();
         private void btn_save_Click(object sender, EventArgs e)
         {
@@ -313,7 +319,7 @@ namespace labproject
                 dataGridView1.Rows.RemoveAt(item.Index);
             }
         }
-        DataSet ds = new DataSet();
+        
         private void btn_search_Click(object sender, EventArgs e)
         {
             string search_column = conn_info.columnNames[ccb_column_list.SelectedIndex];
@@ -336,9 +342,6 @@ namespace labproject
         connected_table conn_info = new connected_table();
         public class connected_table
         {
-            public int row { get; set; }
-            public int col { get; set; }
-
             public List<string> tableNames = new List<string>();
             public List<string> columnNames = new List<string>();
           //  public string selected_table;
@@ -346,6 +349,7 @@ namespace labproject
 
         private void get_Tables_list_from_conn()
         {
+            conn_info.tableNames.Clear();
             string[] restrictions = new string[4];
             restrictions[3] = "Table";
 
@@ -360,6 +364,8 @@ namespace labproject
 
         private void get_Columns_list_from_con_table(string table_name)
         {
+            ccb_column_list.Items.Clear();
+            conn_info.columnNames.Clear();
             Console.WriteLine("**Print all the columns in table {0}", table_name);
             /*
                 get Column schema of the table
@@ -381,6 +387,7 @@ namespace labproject
         }
         private void load_DataTable_to_GridView(string table_name)
         {
+            dataGridView1.DataSource = null;
             /*
              Method 1
              */
@@ -395,9 +402,10 @@ namespace labproject
             https://stackoverflow.com/questions/15149491/how-to-display-data-in-datagridview-from-access-database/34288085
              */
             string query = "SELECT * From "+ table_name;
-            
+            //ds.Clear();
             using (OleDbDataAdapter table_Adapter = new OleDbDataAdapter(query, myAppUtilities.get_connection()))
-            { 
+            {
+                DataSet ds = new DataSet();
                 table_Adapter.Fill(ds);
                 dataGridView1.DataSource = ds.Tables[0];
             }
