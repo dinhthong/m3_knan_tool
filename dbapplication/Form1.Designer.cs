@@ -67,7 +67,7 @@
             // 
             // btn_test
             // 
-            this.btn_test.Location = new System.Drawing.Point(919, 79);
+            this.btn_test.Location = new System.Drawing.Point(965, 116);
             this.btn_test.Name = "btn_test";
             this.btn_test.Size = new System.Drawing.Size(75, 23);
             this.btn_test.TabIndex = 4;
@@ -155,9 +155,9 @@
             // 
             // btn_insert
             // 
-            this.btn_insert.Location = new System.Drawing.Point(981, 366);
+            this.btn_insert.Location = new System.Drawing.Point(866, 41);
             this.btn_insert.Name = "btn_insert";
-            this.btn_insert.Size = new System.Drawing.Size(75, 23);
+            this.btn_insert.Size = new System.Drawing.Size(75, 31);
             this.btn_insert.TabIndex = 13;
             this.btn_insert.Text = "insert";
             this.btn_insert.UseVisualStyleBackColor = true;

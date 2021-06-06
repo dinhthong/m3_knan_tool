@@ -87,7 +87,7 @@ namespace labproject
            It always solve my previous error (object reference not set to an instance of an object.') when trying to loop:
          */
         int txtbox_y_location = 60;
-
+        List<TextBox> inputTextboxList = new List<TextBox>();
         private void btn_test_Click(object sender, EventArgs e)
         {
             SystemSounds.Hand.Play();
@@ -97,12 +97,13 @@ namespace labproject
                 var txt = new TextBox();
                 txtTeamNames[i] = txt;
                 txt.Name = "txtbox" + Convert.ToString(i);
-                txt.Text = Convert.ToString(i);
+                //txt.Text = Convert.ToString(i);
                 txt.Location = new Point(65 + 110*i, txtbox_y_location);
                 txt.Visible = true;
                 this.tabPage1.Controls.Add(txt);
                 Console.WriteLine("Create text box {0}", i);
                 txt.BringToFront();
+                inputTextboxList.Add(txt);
             }
 
             Label[] lb_names = new Label[conn_info.columnNames.Count];
@@ -400,7 +401,22 @@ namespace labproject
 
         private void btn_insert_Click(object sender, EventArgs e)
         {
+            /*
+             * https://stackoverflow.com/questions/10771048/how-to-define-an-array-of-textboxes-in-c/10771284
+             loop through column count
+                * https://stackoverflow.com/questions/337797/adding-new-row-to-datatables-top
+                * note that the current datagridview is not bound to a dataset so u can't programmatically create and add new row to this
+             */
 
+            DataTable dataTable = dataGridView1.DataSource as DataTable;
+            DataRow newRow = dataTable.NewRow();
+            for (int i = 1; i < conn_info.columnNames.Count; i++)
+            {
+                // dataTable.Rows.Add(inputTextboxList[i].Text);
+                if (inputTextboxList[i].Text!="")
+                    newRow[i] = inputTextboxList[i].Text;
+            }
+            dataTable.Rows.InsertAt(newRow, 0);
         }
     }
 }
