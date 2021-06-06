@@ -25,13 +25,8 @@ namespace labproject
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            
         }
-
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-        OleDbConnection conn;
 
         string error_table_name = "loi_tb_tongthe";
         private void formconnectForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -45,7 +40,8 @@ namespace labproject
             load_DataTable_to_GridView(Properties.Settings.Default.access_table_name);
             load_DataTable_to_GridView_err(error_table_name);
             get_Columns_list_from_con_table(Properties.Settings.Default.access_table_name);
-
+            create_input_row_boxes();
+            lb_tablename.Text = Properties.Settings.Default.access_table_name;
         }
 
 
@@ -55,11 +51,13 @@ namespace labproject
         }
         
         private void Form1_Shown(object sender, EventArgs e)
-        {
+        { 
             constr = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" + Properties.Settings.Default.access_file_path + ";Persist Security Info=False";
             check_and_create_logfile_atshown();
             myAppUtilities.connec_to_accdb(Properties.Settings.Default.access_file_path);
             load_database();
+            create_input_row_boxes();
+            lb_tablename.Text = Properties.Settings.Default.access_table_name;
         }
 
         DataTable dtContent = new DataTable();
@@ -80,47 +78,10 @@ namespace labproject
                 Console.WriteLine(ex.Message);
             }
         }
-        /*
-         * Dynamically create array of textboxes in C#
-         * https://stackoverflow.com/questions/9368748/dynamically-create-multiple-textboxes-c-sharp
-         https://stackoverflow.com/questions/18092711/textbox-not-showing-in-winforms-form
-           It always solve my previous error (object reference not set to an instance of an object.') when trying to loop:
-         */
-        int txtbox_y_location = 60;
-        List<TextBox> inputTextboxList = new List<TextBox>();
+
         private void btn_test_Click(object sender, EventArgs e)
         {
             SystemSounds.Hand.Play();
-            TextBox[] txtTeamNames = new TextBox[conn_info.columnNames.Count];
-            for (int i = 0; i < conn_info.columnNames.Count; i++)
-            {
-                var txt = new TextBox();
-                txtTeamNames[i] = txt;
-                txt.Name = "txtbox" + Convert.ToString(i);
-                //txt.Text = Convert.ToString(i);
-                txt.Location = new Point(65 + 110*i, txtbox_y_location);
-                txt.Visible = true;
-                this.tabPage1.Controls.Add(txt);
-                Console.WriteLine("Create text box {0}", i);
-                txt.BringToFront();
-                inputTextboxList.Add(txt);
-            }
-
-            Label[] lb_names = new Label[conn_info.columnNames.Count];
-            for (int i = 0; i < conn_info.columnNames.Count; i++)
-            {
-                var lb = new Label();
-                lb_names[i] = lb;
-                lb.Name = "lb" + Convert.ToString(i); 
-                lb.Text = conn_info.columnNames[i];
-                lb.Location = new Point(65 + 110 * i, txtbox_y_location-30);
-                lb.Visible = true;
-                this.tabPage1.Controls.Add(lb);
-                Console.WriteLine("Create Label {0}", i);
-                lb.BringToFront();
-
-            }
-
         }
 
         List<CellPosition> data_change_cell_index = new List<CellPosition>();
@@ -129,7 +90,6 @@ namespace labproject
             /*
              Save last DataGrid Content
              */
-            // dataGridView1
             Console.WriteLine("There are total of {0} data change", data_change_cell_index.Count);
             for (int j=0; j< data_change_cell_index.Count; j++)
             {
@@ -142,7 +102,10 @@ namespace labproject
             https://stackoverflow.com/questions/6295161/how-to-build-a-datatable-from-a-datagridview
 
              */
-            string query = "SELECT * FROM " + Properties.Settings.Default.access_table_name;
+
+            //   string query = "SELECT * FROM " + Properties.Settings.Default.access_table_name;
+            string query = string.Format("SELECT * FROM {0}", Properties.Settings.Default.access_table_name);
+            Console.WriteLine(query);
             using (OleDbCommand oledbCommand = new OleDbCommand(query, myAppUtilities.get_connection()))
             {
                 using (OleDbDataAdapter oledbDataAdapter = new OleDbDataAdapter(oledbCommand))
@@ -317,7 +280,7 @@ namespace labproject
              Method 2
             https://stackoverflow.com/questions/15149491/how-to-display-data-in-datagridview-from-access-database/34288085
              */
-            string query = "SELECT * From "+ table_name;
+            string query = "SELECT * From " + table_name;
             //ds.Clear();
             using (OleDbDataAdapter table_Adapter = new OleDbDataAdapter(query, myAppUtilities.get_connection()))
             {
@@ -398,7 +361,59 @@ namespace labproject
         {
 
         }
-
+        /*
+         * Dynamically create array of textboxes in C#
+         * https://stackoverflow.com/questions/9368748/dynamically-create-multiple-textboxes-c-sharp
+         https://stackoverflow.com/questions/18092711/textbox-not-showing-in-winforms-form
+           It always solve my previous error (object reference not set to an instance of an object.') when trying to loop:
+         */
+        int txtbox_y_location = 60;
+        List<TextBox> inputTextboxList = new List<TextBox>();
+        List<Label> inputLabelList = new List<Label>();
+        private void create_input_row_boxes()
+        {
+            if (inputTextboxList.Count>0)
+            {
+                for (int i = 0; i < inputTextboxList.Count; i++)
+                {
+                    this.tabPage1.Controls.Remove(inputTextboxList[i]);
+                    inputTextboxList[i].Dispose();
+                    this.tabPage1.Controls.Remove(inputLabelList[i]);
+                    inputLabelList[i].Dispose();
+                }
+            }
+            inputTextboxList.Clear();
+            inputLabelList.Clear();
+            TextBox[] txtTeamNames = new TextBox[conn_info.columnNames.Count];
+            for (int i = 0; i < conn_info.columnNames.Count; i++)
+            {
+                var txt = new TextBox();
+                txtTeamNames[i] = txt;
+                txt.Name = "txtbox" + Convert.ToString(i);
+                //txt.Text = Convert.ToString(i);
+                txt.Location = new Point(65 + 110 * i, txtbox_y_location);
+                txt.Visible = true;
+                this.tabPage1.Controls.Add(txt);
+                Console.WriteLine("Create text box {0}", i);
+                txt.BringToFront();
+                inputTextboxList.Add(txt);
+            }
+            inputTextboxList[0].Enabled = false;
+            Label[] lb_names = new Label[conn_info.columnNames.Count];
+            for (int i = 0; i < conn_info.columnNames.Count; i++)
+            {
+                var lb = new Label();
+                lb_names[i] = lb;
+                lb.Name = "lb" + Convert.ToString(i);
+                lb.Text = conn_info.columnNames[i];
+                lb.Location = new Point(65 + 110 * i, txtbox_y_location - 30);
+                lb.Visible = true;
+                this.tabPage1.Controls.Add(lb);
+                Console.WriteLine("Create Label {0}", i);
+                lb.BringToFront();
+                inputLabelList.Add(lb);
+            }
+        }
         private void btn_insert_Click(object sender, EventArgs e)
         {
             /*

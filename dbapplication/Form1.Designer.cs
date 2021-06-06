@@ -48,6 +48,7 @@
             this.btn_adderr = new System.Windows.Forms.Button();
             this.txt_newerror = new System.Windows.Forms.TextBox();
             this.btn_report = new System.Windows.Forms.Button();
+            this.lb_tablename = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewQuery)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -78,7 +79,7 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(22, 116);
+            this.dataGridView1.Location = new System.Drawing.Point(22, 133);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(882, 361);
             this.dataGridView1.TabIndex = 5;
@@ -155,7 +156,7 @@
             // 
             // btn_insert
             // 
-            this.btn_insert.Location = new System.Drawing.Point(866, 41);
+            this.btn_insert.Location = new System.Drawing.Point(376, 96);
             this.btn_insert.Name = "btn_insert";
             this.btn_insert.Size = new System.Drawing.Size(75, 31);
             this.btn_insert.TabIndex = 13;
@@ -173,7 +174,7 @@
             // 
             // btn_Connect
             // 
-            this.btn_Connect.Location = new System.Drawing.Point(981, 26);
+            this.btn_Connect.Location = new System.Drawing.Point(6, 3);
             this.btn_Connect.Name = "btn_Connect";
             this.btn_Connect.Size = new System.Drawing.Size(149, 31);
             this.btn_Connect.TabIndex = 15;
@@ -259,11 +260,20 @@
             this.btn_report.Text = "REPORT";
             this.btn_report.UseVisualStyleBackColor = true;
             // 
+            // lb_tablename
+            // 
+            this.lb_tablename.AutoSize = true;
+            this.lb_tablename.Location = new System.Drawing.Point(180, 26);
+            this.lb_tablename.Name = "lb_tablename";
+            this.lb_tablename.Size = new System.Drawing.Size(0, 13);
+            this.lb_tablename.TabIndex = 18;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1154, 626);
+            this.Controls.Add(this.lb_tablename);
             this.Controls.Add(this.btn_report);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.dataGridViewQuery);
@@ -308,6 +318,7 @@
         private System.Windows.Forms.Button btn_adderr;
         private System.Windows.Forms.TextBox txt_newerror;
         private System.Windows.Forms.DataGridView dataGridView_err;
+        private System.Windows.Forms.Label lb_tablename;
     }
 }
 
