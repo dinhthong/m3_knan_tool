@@ -25,12 +25,6 @@ namespace labproject
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
-            //disconnectToolStripMenuItem.Enabled = false;
-            //runQueryToolStripMenuItem.ShortcutKeys = Keys.F5;
-            //insertRecordToolStripMenuItem.ShortcutKeys = Keys.F6;
-            //updateRecordToolStripMenuItem.ShortcutKeys = Keys.F7;
-            //deleteRecordToolStripMenuItem.ShortcutKeys = Keys.F8;
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -38,15 +32,7 @@ namespace labproject
             this.Close();
         }
         OleDbConnection conn;
-        //private void connectToolStripMenuItem_Click(object sender, EventArgs e)
-        //{
-        //    myAppUtilities.connec_to_accdb(Properties.Settings.Default.access_file_path);
-        //    //disconnectToolStripMenuItem.Enabled = true;
-        //    //connectToolStripMenuItem.Enabled = false;
-        //    FormConnect formconnect = new FormConnect();
-        //    formconnect.Show();
-        //    formconnect.FormClosed += new FormClosedEventHandler(formconnectForm_FormClosed);
-        //}
+
         string error_table_name = "loi_tb_tongthe";
         private void formconnectForm_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -58,88 +44,10 @@ namespace labproject
             Console.WriteLine("Event: Form closed in the parent");
             load_DataTable_to_GridView(Properties.Settings.Default.access_table_name);
             load_DataTable_to_GridView_err(error_table_name);
-            //dataGridView1.Reset
-            //dataGridView1.ResetBindings();
-            //dataGridView1.Update();
-            //dataGridView1.Refresh();
             get_Columns_list_from_con_table(Properties.Settings.Default.access_table_name);
 
         }
-        //private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
-        //{
-        //    myAppUtilities.disconnec_to_accdb(Properties.Settings.Default.access_file_path);
-        //    //disconnectToolStripMenuItem.Enabled = false;
-        //    //connectToolStripMenuItem.Enabled = true;
-        //}
 
-        //private void runQueryToolStripMenuItem_Click(object sender, EventArgs e)
-        //{
-        //    string sqlstr = textBoxQuery.Text;
-        //    if (connectToolStripMenuItem.Enabled == false)
-        //    {
-        //        try
-        //        {
-        //            OleDbDataAdapter da = new OleDbDataAdapter(sqlstr, constr);
-        //            da.Fill(vt);
-        //            da.Dispose();
-        //            dataGridViewQuery.DataSource = null;
-        //            dataGridViewQuery.Refresh();
-        //            dataGridViewQuery.Rows.Clear();
-        //            dataGridViewQuery.DataSource = vt;
-        //        }
-        //        catch (Exception ar)
-        //        {
-        //            MessageBox.Show(ar.Message);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Please connect to the database first!");
-        //    }
-        //}
-
-        //private void updateRecordToolStripMenuItem_Click(object sender, EventArgs e)
-        //{
-        //    if (connectToolStripMenuItem.Enabled == false)
-        //    {
-        //        FormUpdate formupdate = new FormUpdate();
-        //        formupdate.Show();
-        //        this.Visible = false;
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Please connect to the database first!");
-        //    }
-        //}
-
-        //private void insertRecordToolStripMenuItem_Click(object sender, EventArgs e)
-        //{
-
-        //    if (connectToolStripMenuItem.Enabled == false)
-        //    {
-        //        FormInsert forminsert = new FormInsert();
-        //        forminsert.Show();
-        //        this.Visible = false;
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Please connect to the database first!");
-        //    }
-        //}
-
-        //private void deleteRecordToolStripMenuItem_Click(object sender, EventArgs e)
-        //{
-        //    if (connectToolStripMenuItem.Enabled == false)
-        //    {
-        //        FormDelete formdelete = new FormDelete();
-        //        formdelete.Show();
-        //        this.Visible = false;
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Please connect to the database first!");
-        //    }
-        //}
 
         private void dataGridViewQuery_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -155,8 +63,6 @@ namespace labproject
         }
 
         DataTable dtContent = new DataTable();
-        
-
         List<TextBox> myTextboxList = new List<TextBox>();
 
         void load_database()
@@ -168,31 +74,6 @@ namespace labproject
                 get_Columns_list_from_con_table(Properties.Settings.Default.access_table_name);
                 load_DataTable_to_GridView(Properties.Settings.Default.access_table_name);
                 load_DataTable_to_GridView_err(error_table_name);
-                //  txt.Location = new Point(30, 40);
-
-                //  //   for (int i = 0; i <= userTables.Rows.Count; i++)
-                //  // {
-                //  //txt[i].Height = 40;
-                //  //txt[i].Width = 300;
-                //  //txt[i] = new TextBox();
-                //  //txt[i].Text = tableNames[i];
-                //  //txt[i].Name = tableNames[i];
-                //  //if (i > 0)
-                //  //{
-                //  //    txt[i].Left = txt[i - 1].Right;
-                //  //}
-                //  txt.Height = 40;
-                //  txt.Width = 300;
-                ////  txt = new textbox();
-                //  txt.Text = tableNames[0];
-                //  txt.Name = tableNames[0];
-                //  this.Controls.Add(txt);
-                //  //this.show();
-                //  // }
-
-                //myTextBoxList.Add(TextBox1);
-                //myTextBoxList.Add(TextBox2);
-                //mytextBoxList.Add(TextBox3);
             }
             catch (Exception ex)
             {
@@ -205,30 +86,42 @@ namespace labproject
          https://stackoverflow.com/questions/18092711/textbox-not-showing-in-winforms-form
            It always solve my previous error (object reference not set to an instance of an object.') when trying to loop:
          */
+        int txtbox_y_location = 60;
+
         private void btn_test_Click(object sender, EventArgs e)
         {
             SystemSounds.Hand.Play();
-            TextBox[] txtTeamNames = new TextBox[5];
-            for (int i = 0; i < txtTeamNames.Length; i++)
+            TextBox[] txtTeamNames = new TextBox[conn_info.columnNames.Count];
+            for (int i = 0; i < conn_info.columnNames.Count; i++)
             {
                 var txt = new TextBox();
                 txtTeamNames[i] = txt;
                 txt.Name = "txtbox" + Convert.ToString(i);
                 txt.Text = Convert.ToString(i);
-                txt.Location = new Point(172, 90 + (i * 28));
+                txt.Location = new Point(65 + 110*i, txtbox_y_location);
                 txt.Visible = true;
-                this.tabPage2.Controls.Add(txt);
-                //this.Controls.Add(txt);
+                this.tabPage1.Controls.Add(txt);
                 Console.WriteLine("Create text box {0}", i);
                 txt.BringToFront();
+            }
+
+            Label[] lb_names = new Label[conn_info.columnNames.Count];
+            for (int i = 0; i < conn_info.columnNames.Count; i++)
+            {
+                var lb = new Label();
+                lb_names[i] = lb;
+                lb.Name = "lb" + Convert.ToString(i); 
+                lb.Text = conn_info.columnNames[i];
+                lb.Location = new Point(65 + 110 * i, txtbox_y_location-30);
+                lb.Visible = true;
+                this.tabPage1.Controls.Add(lb);
+                Console.WriteLine("Create Label {0}", i);
+                lb.BringToFront();
 
             }
+
         }
-        //private DataTable GetTableContent()
-        //{
-        //    DataTable dtContent = new DataTable();
-        //    return dtContent;
-        //}
+
         List<CellPosition> data_change_cell_index = new List<CellPosition>();
         private void btn_save_Click(object sender, EventArgs e)
         {
@@ -391,8 +284,6 @@ namespace labproject
             ccb_column_list.SelectedIndex = 1;
         }
 
-
-            
             private void load_DataTable_to_GridView_err(string table_name)
             {
                 /*
@@ -503,6 +394,11 @@ namespace labproject
         }
 
         private void tabPage2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_insert_Click(object sender, EventArgs e)
         {
 
         }
