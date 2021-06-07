@@ -1,7 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31313.79
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "labproject", "labproject.csproj", "{4685A8F3-EF90-4D29-A209-3B6591C72218}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "m3kn", "..\m3kn\m3kn.vdproj", "{226AE703-8719-4820-8341-07F781D8C976}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,8 +17,13 @@ Global
 		{4685A8F3-EF90-4D29-A209-3B6591C72218}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4685A8F3-EF90-4D29-A209-3B6591C72218}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4685A8F3-EF90-4D29-A209-3B6591C72218}.Release|Any CPU.Build.0 = Release|Any CPU
+		{226AE703-8719-4820-8341-07F781D8C976}.Debug|Any CPU.ActiveCfg = Debug
+		{226AE703-8719-4820-8341-07F781D8C976}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {125C3586-A2A2-47E8-BE26-8F39BC80D060}
 	EndGlobalSection
 EndGlobal

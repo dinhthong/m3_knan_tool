@@ -247,13 +247,17 @@ namespace labproject
             }
             ccb_column_list.SelectedIndex = 1;
         }
-
+            /*
+                This function must be tied to a Table, by user's selection
+             */
             private void load_DataTable_to_GridView_err(string table_name)
             {
                 /*
-                 Method 2
-                https://stackoverflow.com/questions/15149491/how-to-display-data-in-datagridview-from-access-database/34288085
+                    Method 2
+                    https://stackoverflow.com/questions/15149491/how-to-display-data-in-datagridview-from-access-database/34288085
                  */
+                try
+            {
                 string query = "SELECT * From " + table_name;
                 //ds.Clear();
                 using (OleDbDataAdapter table_Adapter = new OleDbDataAdapter(query, myAppUtilities.get_connection()))
@@ -262,6 +266,12 @@ namespace labproject
                     table_Adapter.Fill(ds);
                     dataGridView_err.DataSource = ds.Tables[0];
                 }
+            }   
+            catch (Exception ex)
+            {
+
+            }
+
             }
 
         private void load_DataTable_to_GridView(string table_name)
@@ -397,8 +407,12 @@ namespace labproject
                 Console.WriteLine("Create text box {0}", i);
                 txt.BringToFront();
                 inputTextboxList.Add(txt);
+                if (i == 0)
+                {
+                    inputTextboxList[0].Enabled = false;
+                }
             }
-            inputTextboxList[0].Enabled = false;
+            
             Label[] lb_names = new Label[conn_info.columnNames.Count];
             for (int i = 0; i < conn_info.columnNames.Count; i++)
             {

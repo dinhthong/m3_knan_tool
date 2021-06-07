@@ -36,7 +36,7 @@ namespace labproject
                 if (openFileDialogacdb.FileName != Properties.Settings.Default.access_file_path)
                 {
                     Properties.Settings.Default.access_file_path = openFileDialogacdb.FileName;
-                   // txt_filepath.Text = openFileDialogacdb.FileName;
+                    txt_filepath.Text = openFileDialogacdb.FileName;
                     //Properties.Settings.Default.access_file_path = access_file_path;
                     myAppUtilities.save_settings();
                     cbb_tables_list.Items.Clear();
