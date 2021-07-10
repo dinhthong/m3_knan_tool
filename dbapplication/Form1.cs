@@ -100,7 +100,6 @@ namespace labproject
              Bind data from dataGridView1 to Access Database:
             https://stackoverflow.com/questions/20998803/c-sharp-datatable-update-access-database
             https://stackoverflow.com/questions/6295161/how-to-build-a-datatable-from-a-datagridview
-
              */
 
             //   string query = "SELECT * FROM " + Properties.Settings.Default.access_table_name;
@@ -439,13 +438,93 @@ namespace labproject
 
             DataTable dataTable = dataGridView1.DataSource as DataTable;
             DataRow newRow = dataTable.NewRow();
+            
+
+            int validate_status = check_and_validate_input_data(ref newRow);
+            /*
+                Check and validate input value before actually inserting new row to dataTable
+            */
+            if (validate_status<0)
+            {
+                MessageBox.Show("Input data is not good, abort inserting");
+            }
+            else
+            {
+                /*
+                    Get number of row and insert at the end of the dataTable (new Row)
+                 */
+                dataTable.Rows.InsertAt(newRow, dataTable.Rows.Count);
+            }
+            
+        }
+        int check_and_validate_input_data(ref DataRow newRowData)
+        {
+            char[] charsToTrim = {' ', '\'' };
+            string trimmed_text;
+            int error_cnt = 0;
             for (int i = 1; i < conn_info.columnNames.Count; i++)
             {
-                // dataTable.Rows.Add(inputTextboxList[i].Text);
-                if (inputTextboxList[i].Text!="")
-                    newRow[i] = inputTextboxList[i].Text;
+                trimmed_text = inputTextboxList[i].Text.Trim(charsToTrim);
+                Console.WriteLine(newRowData[i].GetType());
+                /*
+                    ensure input TextboxList data is all in correct format (pre-defined by setting)
+                    by try catch
+                 */
+                try
+                {
+                    if (trimmed_text == "")
+                    {
+                        /*
+                         https://stackoverflow.com/questions/5120914/setting-a-datarow-item-to-null
+                         */
+                        newRowData[i] = DBNull.Value;
+                    }
+                    else
+                    {
+                        newRowData[i] = trimmed_text;
+                    }
+                    
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    Console.WriteLine("Input data is illegal!");
+                    error_cnt++;
+                }
             }
-            dataTable.Rows.InsertAt(newRow, 0);
+
+            if (check_newrow_data_is_all_empty(newRowData)==1)
+            {
+                return -1;
+            }
+            if (error_cnt > 0)
+                return -2;
+            return 1;
         }
+        /*
+         return 
+         */
+        private int check_newrow_data_is_all_empty(DataRow dr)
+        {
+
+            if (dr == null)
+            {
+                return 1;
+            }
+            else
+            {
+                foreach (var value in dr.ItemArray)
+                {
+                    if (value.ToString() != "" && value != null)
+                    {
+                        return 0;
+                    }
+                }
+                return 1;
+            }
+        }
+
+  
+
     }
 }
