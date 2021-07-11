@@ -132,21 +132,22 @@ namespace labproject
         private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             Console.WriteLine("Data change detected");
-            string msg = String.Format(
-               "Cell at row {0}, column {1} value changed",
-               e.RowIndex, e.ColumnIndex);
-            Console.WriteLine(msg, "Cell Value Changed");
-
-            data_change_cell_index.Add(new CellPosition
-            {
-                row = e.RowIndex,
-                col = e.ColumnIndex
-            });
-
-            Console.WriteLine("Cell Value Changed New Value is: {0}", dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value);
-            dataGridView1.EndEdit();
+            cell_value_change_action(e.RowIndex, e.ColumnIndex);
         }
 
+        private void cell_value_change_action(int row_index, int col_index)
+        {
+            string msg = String.Format(
+            "Cell at row {0}, column {1} value changed", row_index, col_index);
+            Console.WriteLine(msg, "Cell Value Changed");
+            data_change_cell_index.Add(new CellPosition
+            {
+                row = row_index,
+                col = col_index
+            });
+            Console.WriteLine("Cell Value Changed New Value is: {0}", dataGridView1.Rows[row_index].Cells[col_index].Value);
+            dataGridView1.EndEdit();
+        }
         private void dataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             string msg = String.Format(

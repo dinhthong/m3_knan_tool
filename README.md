@@ -24,10 +24,11 @@ Features of db app:
 - Lock device feature -> After a device is locked, it must be unlock (by priviledged user) to modify.
 
 ## Todos features
-- Import data feature from files (Access, Excel...), if the data format is persistent and it complies with the database schema.
+- Import data feature from files (Access, Excel...), if the data format is persistent and it complies with the database schema. -> Import Wizard -> Manually link the table schema between to be imported and the current table:
+When importing -> Interation check for each row: If a row data is legal (data format, not all blank) -> accept inserting new. if duplication -> error => Finally: import log.
 - Allow update the location of an item anytime.
 - Add project history
-
+- Add log to .txt when insert, update row
 ### DataGrid feature
 - Disable editing first column (ID). The data of this column is automatically updated when user inserts a new row.
 - If the value of previous changed cells is zero -> No need for specify the change reason, the update is valid.
@@ -41,3 +42,9 @@ Features of db app:
 1. When [Search] -> [Update] -> It inserts a new row, instead of what we're implying to be. That's because the current 'DataGridview1' is changed, thus, the data we work on when click [Insert], [Update] buttons are wrong.
 2. Detect source of bug: If a cell value/column name has space characters or Vietnamese characters -> causes the Update to throw an exception
 3. When changing the Table with different schema -> Error when calling SelectionChange event (fill_input_textboxes()). Probably because the new schema hasn't updated.
+
+# Ideas and notes
+- Setting: choose field that can't be updated (For example STT_TB)
+- Record all history
+- When updating an existing cell -> Choose reason -> Option A: create new reason. Option B: choose from existing reasons (we will also have reasons database :): can be updated from GUI or ...)
+- Multiple search and update for selected items.
