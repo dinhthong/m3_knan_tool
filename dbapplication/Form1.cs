@@ -153,14 +153,26 @@ namespace labproject
                "Cell at row {0}, column {1} double click",
                e.RowIndex, e.ColumnIndex);
             Console.WriteLine(msg, "Double Click");
+            if (e.ColumnIndex == -1)
+            {
+                /*
+                 Fill text box with the values in this row
+                 */
+                fill_input_textboxes(ref inputTextboxList, dataGridView1, dataGridView1.CurrentCell.RowIndex);
+                //dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+            }
+            //
         }
-
+        void fill_input_textboxes(ref List<TextBox> source_TextboxList, DataGridView inputDataGridView, int row_index)
+        {
+            for (int i=1; i< source_TextboxList.Count; i++)
+            {
+               source_TextboxList[i].Text = inputDataGridView[i, row_index].Value.ToString();
+            }
+        }
         private void dataGridView1_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
             Console.WriteLine("new Row is automatically added");
-            //OleDbCommand cmd = conn.CreateCommand();
-            //cmd.CommandType = CommandType.Text;
-      //      cmd.CommandText = "insert into "+ wk_table_name + " values();
         }
 
         private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
@@ -439,10 +451,11 @@ namespace labproject
             DataTable dataTable = dataGridView1.DataSource as DataTable;
             DataRow newRow = dataTable.NewRow();
             
-            int healthy_rowdata_flag = check_and_validate_input_data(ref newRow);
+            int healthy_rowdata_flag = check_and_verify_input_data(ref newRow, inputTextboxList);
             /*
                 Check and validate input value before actually inserting new row to dataTable
             */
+            int newrow_data_valid = 0;
             if (healthy_rowdata_flag<0)
             {
                 MessageBox.Show("Input data is not in correct type, abort inserting");
@@ -452,57 +465,29 @@ namespace labproject
                 /*
                     Get number of row and insert at the end of the dataTable (new Row)
                  */
-                if (check_duplicate_in_all_column(newRow, dataTable) ==1)
-                    dataTable.Rows.InsertAt(newRow, dataTable.Rows.Count);
+                if (myAppUtilities.not_has_duplicate_in_column(newRow, dataTable, conn_info.columnNames) != 0)
+                {
+                    newrow_data_valid = 1;
+                }
             }
             
+            if (newrow_data_valid == 1)
+               dataTable.Rows.InsertAt(newRow, dataTable.Rows.Count);
         }
         /*
          * check duplication in newRow data in each column
-            Discard Null 
         */
-        private int check_duplicate_in_all_column(DataRow newRowDat, DataTable dataTabl)
-        {
-            //Console.WriteLine("---check_duplicate_in_all_column");
-            int duplicate_cnt = 0;
-            for (int i = 1; i < conn_info.columnNames.Count; i++)
-            {
-                if (newRowDat[i] == DBNull.Value)
-                {
-                    //Console.WriteLine("---Null detected");
-                    continue;
-                }
-                for (int j = 0; j < dataTabl.Rows.Count; j++)
-                {
-                    //Console.WriteLine("Value of newRowDat[{0}]={1},  dataTabl.Rows[{2}].ItemArray[{0}]={3}", i, newRowDat[i], j, dataTabl.Rows[j].ItemArray[i]);
-                    //Console.WriteLine("Type 1: {0}, type 2 {1}", newRowDat[i].GetType().Name, dataTabl.Rows[j].ItemArray[i].GetType().Name);
-                    /*
-                     @note: newRowDat[i] == dataTabl.Rows[j].ItemArray[i] doesn't work as they're different type
-                        So I have to use ToString() method as a workaround
-                     */
-                    if (newRowDat[i].ToString() == dataTabl.Rows[j].ItemArray[i].ToString())
-                    {
-                        Console.WriteLine("Error: Duplicate at [column name; row index] = [{0}; {1}]", conn_info.columnNames[i], j);
-                        duplicate_cnt++;
-                    }
-                }
-            }
-            Console.WriteLine("Duplicate_cnt value =  {0}", duplicate_cnt);
-            if (duplicate_cnt > 0)
-            {
-                Console.WriteLine("Please correct input textboxes before adding");
-                return -1;
-            }
-            return 1;
-        }
-        int check_and_validate_input_data(ref DataRow newRowData)
+        int check_and_verify_input_data(ref DataRow newRowData, List<TextBox> source_TextboxList)
         {
             char[] charsToTrim = {' ', '\'' };
             string trimmed_text;
             int error_cnt = 0;
+            /*
+             First check: legal input as field definition
+             */
             for (int i = 1; i < conn_info.columnNames.Count; i++)
             {
-                trimmed_text = inputTextboxList[i].Text.Trim(charsToTrim);
+                trimmed_text = source_TextboxList[i].Text.Trim(charsToTrim);
                 //Console.WriteLine(newRowData[i].GetType());
                 /*
                     ensure input TextboxList data is all in correct format (pre-defined by setting)
@@ -525,44 +510,36 @@ namespace labproject
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
-                    Console.WriteLine("Input data is illegal!");
+                    inform_user_error("Input data is illegal!");
+                    inform_user_error(e.Message);
                     error_cnt++;
                 }
             }
-
-            if (check_newrow_data_is_all_empty(newRowData)==1)
+            /*
+             Second check: At least 1 column isn't empty
+             */
+            if (myAppUtilities.check_newrow_data_is_all_empty(newRowData) == 1)
             {
                 return -1;
+
             }
             if (error_cnt > 0)
+            {
                 return -2;
+            }
+                
             return 1;
         }
-        /*
-         return 
-         */
-        private int check_newrow_data_is_all_empty(DataRow dr)
-        {
 
-            if (dr == null)
-            {
-                return 1;
-            }
-            else
-            {
-                foreach (var value in dr.ItemArray)
-                {
-                    if (value.ToString() != "" && value != null)
-                    {
-                        return 0;
-                    }
-                }
-                return 1;
-            }
+        public static void inform_user_error(string mes, params object[] args)
+        {
+            Console.WriteLine("****User box:");
+            Console.WriteLine(mes, args);   
         }
 
-  
-
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
+            Console.WriteLine("Selection changed event test");
+        }
     }
 }

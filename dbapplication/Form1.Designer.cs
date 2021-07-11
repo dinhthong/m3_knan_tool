@@ -49,6 +49,7 @@
             this.txt_newerror = new System.Windows.Forms.TextBox();
             this.btn_report = new System.Windows.Forms.Button();
             this.lb_tablename = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewQuery)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -79,15 +80,17 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(22, 133);
+            this.dataGridView1.Location = new System.Drawing.Point(22, 147);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(882, 361);
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.Size = new System.Drawing.Size(882, 358);
             this.dataGridView1.TabIndex = 5;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             this.dataGridView1.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDoubleClick);
             this.dataGridView1.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridView1_CellValidating);
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
             this.dataGridView1.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridView1_RowsAdded);
+            this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             // 
             // btn_save
             // 
@@ -129,14 +132,14 @@
             // 
             // txt_search
             // 
-            this.txt_search.Location = new System.Drawing.Point(22, 500);
+            this.txt_search.Location = new System.Drawing.Point(22, 514);
             this.txt_search.Name = "txt_search";
             this.txt_search.Size = new System.Drawing.Size(313, 20);
             this.txt_search.TabIndex = 10;
             // 
             // btn_search
             // 
-            this.btn_search.Location = new System.Drawing.Point(376, 497);
+            this.btn_search.Location = new System.Drawing.Point(376, 511);
             this.btn_search.Name = "btn_search";
             this.btn_search.Size = new System.Drawing.Size(75, 23);
             this.btn_search.TabIndex = 11;
@@ -156,7 +159,7 @@
             // 
             // btn_insert
             // 
-            this.btn_insert.Location = new System.Drawing.Point(376, 96);
+            this.btn_insert.Location = new System.Drawing.Point(376, 108);
             this.btn_insert.Name = "btn_insert";
             this.btn_insert.Size = new System.Drawing.Size(75, 31);
             this.btn_insert.TabIndex = 13;
@@ -167,7 +170,7 @@
             // ccb_column_list
             // 
             this.ccb_column_list.FormattingEnabled = true;
-            this.ccb_column_list.Location = new System.Drawing.Point(488, 500);
+            this.ccb_column_list.Location = new System.Drawing.Point(488, 514);
             this.ccb_column_list.Name = "ccb_column_list";
             this.ccb_column_list.Size = new System.Drawing.Size(186, 21);
             this.ccb_column_list.TabIndex = 14;
@@ -194,6 +197,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.txt_search);
             this.tabPage1.Controls.Add(this.btn_insert);
             this.tabPage1.Controls.Add(this.ccb_column_list);
@@ -268,6 +272,16 @@
             this.lb_tablename.Size = new System.Drawing.Size(0, 13);
             this.lb_tablename.TabIndex = 18;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(910, 415);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(235, 24);
+            this.label2.TabIndex = 16;
+            this.label2.Text = "[Row count; column count]";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -319,6 +333,7 @@
         private System.Windows.Forms.TextBox txt_newerror;
         private System.Windows.Forms.DataGridView dataGridView_err;
         private System.Windows.Forms.Label lb_tablename;
+        private System.Windows.Forms.Label label2;
     }
 }
 

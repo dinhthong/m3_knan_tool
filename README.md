@@ -24,7 +24,7 @@ Features of db app:
 - Lock device feature -> After a device is locked, it must be unlock (by priviledged user) to modify.
 
 ## Todos features
-- Import data feature, if the data format is persistent and it complies with the database schema.
+- Import data feature from files (Access, Excel...), if the data format is persistent and it complies with the database schema.
 - Allow update the location of an item anytime.
 - Add project history
 
