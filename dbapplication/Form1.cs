@@ -165,7 +165,7 @@ namespace labproject
         }
         void fill_input_textboxes(ref List<TextBox> source_TextboxList, DataGridView inputDataGridView, int row_index)
         {
-            for (int i=1; i< source_TextboxList.Count; i++)
+            for (int i=0; i< source_TextboxList.Count; i++)
             {
                source_TextboxList[i].Text = inputDataGridView[i, row_index].Value.ToString();
             }
@@ -388,7 +388,7 @@ namespace labproject
          https://stackoverflow.com/questions/18092711/textbox-not-showing-in-winforms-form
            It always solve my previous error (object reference not set to an instance of an object.') when trying to loop:
          */
-        int txtbox_y_location = 60;
+        
         List<TextBox> inputTextboxList = new List<TextBox>();
         List<Label> inputLabelList = new List<Label>();
         private void create_input_row_boxes()
@@ -406,13 +406,15 @@ namespace labproject
             inputTextboxList.Clear();
             inputLabelList.Clear();
             TextBox[] txtTeamNames = new TextBox[conn_info.columnNames.Count];
+            //int txtbox_y_location = 60;
+            int x_loc=0, y_loc=0;
             for (int i = 0; i < conn_info.columnNames.Count; i++)
             {
                 var txt = new TextBox();
                 txtTeamNames[i] = txt;
                 txt.Name = "txtbox" + Convert.ToString(i);
-                //txt.Text = Convert.ToString(i);
-                txt.Location = new Point(65 + 110 * i, txtbox_y_location);
+                get_x_y_location(ref x_loc, ref y_loc, i, 65, 1100, 75);
+                txt.Location = new Point(x_loc, y_loc);
                 txt.Visible = true;
                 this.tabPage1.Controls.Add(txt);
                 Console.WriteLine("Create text box {0}", i);
@@ -425,13 +427,14 @@ namespace labproject
             }
             
             Label[] lb_names = new Label[conn_info.columnNames.Count];
+            
             for (int i = 0; i < conn_info.columnNames.Count; i++)
             {
                 var lb = new Label();
                 lb_names[i] = lb;
                 lb.Name = "lb" + Convert.ToString(i);
                 lb.Text = conn_info.columnNames[i];
-                lb.Location = new Point(65 + 110 * i, txtbox_y_location - 30);
+                lb.Location = new Point(10 + inputTextboxList[i].Location.X, inputTextboxList[i].Location.Y -25);
                 lb.Visible = true;
                 this.tabPage1.Controls.Add(lb);
                 Console.WriteLine("Create Label {0}", i);
@@ -439,6 +442,26 @@ namespace labproject
                 inputLabelList.Add(lb);
             }
         }
+        /*
+         Calculate the x, y location for a element based on allowed location range.
+         */
+        private void get_x_y_location(ref int x_location, ref int y_location, int index, int min_x_location, int max_x_location, int min_y_location)
+        {
+            int element_x_width = 110, element_y_width = 60;
+
+            int step = 0;
+            int x_width = max_x_location - min_x_location, n = x_width / element_x_width;
+
+            x_location = min_x_location + element_x_width * index;
+            
+            while (x_location + element_x_width > max_x_location)
+            {
+                step++;
+                x_location = x_location - n*element_x_width;
+            }        
+            y_location = min_y_location + element_y_width * step;
+        }
+
         private void btn_insert_Click(object sender, EventArgs e)
         {
             /*
@@ -476,6 +499,7 @@ namespace labproject
         }
         /*
          * check duplication in newRow data in each column
+         * fill good values to newRowdata
         */
         int check_and_verify_input_data(ref DataRow newRowData, List<TextBox> source_TextboxList)
         {
@@ -540,6 +564,69 @@ namespace labproject
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
             Console.WriteLine("Selection changed event test");
+            //Console.WriteLine("Row: {0}, Column: {1}", dataGridView1.CurrentCell.RowIndex, dataGridView1.CurrentCell.ColumnIndex);
+            fill_input_textboxes(ref inputTextboxList, dataGridView1, dataGridView1.CurrentCell.RowIndex);
+        }
+
+        private void btn_update_Click(object sender, EventArgs e)
+        {
+            //Console.WriteLine("button update clicked {0}", dataGridView1.CurrentCell.RowIndex);
+            int insert_row_index = dataGridView1.CurrentCell.RowIndex;
+
+            DataTable dataTable = dataGridView1.DataSource as DataTable;
+            //DataRow newRow = dataTable.NewRow();
+            /*
+             Reference assignment
+             */
+            DataRow currentRow = dataTable.Rows[insert_row_index] as DataRow;
+            
+            for (int k = 0; k < dataTable.Columns.Count; k++)
+                Console.WriteLine("Column: {0}, Content = {1}", k, currentRow[k]);
+            //dataTable.Rows.RemoveAt(insert_row_index);
+            /*
+              @Todos: Get collection of [modify update, blank update, no update] indexes
+                - Modify update: Specify the reason to update
+                - Blank update: Accept and log
+                - No update: Do nothing
+             */
+            int healthy_rowdata_flag = check_and_verify_input_data(ref currentRow, inputTextboxList);
+            /*
+                Check and validate input value before actually inserting new row to dataTable
+            */
+            int newrow_data_valid = 0;
+            if (healthy_rowdata_flag < 0)
+            {
+                MessageBox.Show("Input data is not in correct type, abort inserting");
+            }
+            else
+            {
+                /*
+                 * @todos: check duplicate in modify and blank update columns
+                    Get number of row and insert at the end of the dataTable (new Row)
+                 */
+                //if (not_has_duplicate_in_column(currentRow, dataTable, conn_info.columnNames) != 0)
+                //{
+                //    newrow_data_valid = 1;
+                //}
+            }
+
+            //if (newrow_data_valid == 1)
+            //{
+            //    //dataTable.Rows.RemoveAt(insert_row_index);
+            //    dataTable.Rows.InsertAt(newRow, insert_row_index);
+            //}
+            //else
+            //{
+            //    for (int k = 0; k < dataTable.Columns.Count; k++)
+            //        Console.WriteLine("Column: {0}, Content = {1}", k, oldRow[k]);
+            //    MessageBox.Show("InsertAt(oldRow, insert_row_index)");
+            //    dataTable.Rows.InsertAt(oldRow, insert_row_index);
+            //}
+                
+
+            /*
+             Get the row index
+             */
         }
     }
 }

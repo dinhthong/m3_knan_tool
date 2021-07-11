@@ -43,13 +43,14 @@
             this.btn_Connect = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label2 = new System.Windows.Forms.Label();
+            this.btn_update = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView_err = new System.Windows.Forms.DataGridView();
             this.btn_adderr = new System.Windows.Forms.Button();
             this.txt_newerror = new System.Windows.Forms.TextBox();
             this.btn_report = new System.Windows.Forms.Button();
             this.lb_tablename = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewQuery)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -69,7 +70,7 @@
             // 
             // btn_test
             // 
-            this.btn_test.Location = new System.Drawing.Point(965, 116);
+            this.btn_test.Location = new System.Drawing.Point(1018, 114);
             this.btn_test.Name = "btn_test";
             this.btn_test.Size = new System.Drawing.Size(75, 23);
             this.btn_test.TabIndex = 4;
@@ -80,10 +81,10 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(22, 147);
+            this.dataGridView1.Location = new System.Drawing.Point(22, 206);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(882, 358);
+            this.dataGridView1.Size = new System.Drawing.Size(1006, 358);
             this.dataGridView1.TabIndex = 5;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             this.dataGridView1.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDoubleClick);
@@ -94,7 +95,7 @@
             // 
             // btn_save
             // 
-            this.btn_save.Location = new System.Drawing.Point(981, 183);
+            this.btn_save.Location = new System.Drawing.Point(1034, 178);
             this.btn_save.Name = "btn_save";
             this.btn_save.Size = new System.Drawing.Size(75, 23);
             this.btn_save.TabIndex = 6;
@@ -104,7 +105,7 @@
             // 
             // btn_del
             // 
-            this.btn_del.Location = new System.Drawing.Point(981, 229);
+            this.btn_del.Location = new System.Drawing.Point(1034, 229);
             this.btn_del.Name = "btn_del";
             this.btn_del.Size = new System.Drawing.Size(75, 23);
             this.btn_del.TabIndex = 7;
@@ -132,14 +133,14 @@
             // 
             // txt_search
             // 
-            this.txt_search.Location = new System.Drawing.Point(22, 514);
+            this.txt_search.Location = new System.Drawing.Point(22, 573);
             this.txt_search.Name = "txt_search";
             this.txt_search.Size = new System.Drawing.Size(313, 20);
             this.txt_search.TabIndex = 10;
             // 
             // btn_search
             // 
-            this.btn_search.Location = new System.Drawing.Point(376, 511);
+            this.btn_search.Location = new System.Drawing.Point(376, 570);
             this.btn_search.Name = "btn_search";
             this.btn_search.Size = new System.Drawing.Size(75, 23);
             this.btn_search.TabIndex = 11;
@@ -149,7 +150,7 @@
             // 
             // btn_excel
             // 
-            this.btn_excel.Location = new System.Drawing.Point(981, 321);
+            this.btn_excel.Location = new System.Drawing.Point(1034, 320);
             this.btn_excel.Name = "btn_excel";
             this.btn_excel.Size = new System.Drawing.Size(75, 23);
             this.btn_excel.TabIndex = 12;
@@ -159,7 +160,7 @@
             // 
             // btn_insert
             // 
-            this.btn_insert.Location = new System.Drawing.Point(376, 108);
+            this.btn_insert.Location = new System.Drawing.Point(193, 169);
             this.btn_insert.Name = "btn_insert";
             this.btn_insert.Size = new System.Drawing.Size(75, 31);
             this.btn_insert.TabIndex = 13;
@@ -170,7 +171,7 @@
             // ccb_column_list
             // 
             this.ccb_column_list.FormattingEnabled = true;
-            this.ccb_column_list.Location = new System.Drawing.Point(488, 514);
+            this.ccb_column_list.Location = new System.Drawing.Point(488, 573);
             this.ccb_column_list.Name = "ccb_column_list";
             this.ccb_column_list.Size = new System.Drawing.Size(186, 21);
             this.ccb_column_list.TabIndex = 14;
@@ -192,13 +193,14 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 53);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1152, 566);
+            this.tabControl1.Size = new System.Drawing.Size(1152, 625);
             this.tabControl1.TabIndex = 16;
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.txt_search);
+            this.tabPage1.Controls.Add(this.btn_update);
             this.tabPage1.Controls.Add(this.btn_insert);
             this.tabPage1.Controls.Add(this.ccb_column_list);
             this.tabPage1.Controls.Add(this.btn_test);
@@ -211,10 +213,30 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1144, 540);
+            this.tabPage1.Size = new System.Drawing.Size(1144, 599);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(862, 572);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(235, 24);
+            this.label2.TabIndex = 16;
+            this.label2.Text = "[Row count; column count]";
+            // 
+            // btn_update
+            // 
+            this.btn_update.Location = new System.Drawing.Point(395, 169);
+            this.btn_update.Name = "btn_update";
+            this.btn_update.Size = new System.Drawing.Size(75, 31);
+            this.btn_update.TabIndex = 13;
+            this.btn_update.Text = "update";
+            this.btn_update.UseVisualStyleBackColor = true;
+            this.btn_update.Click += new System.EventHandler(this.btn_update_Click);
             // 
             // tabPage2
             // 
@@ -272,21 +294,11 @@
             this.lb_tablename.Size = new System.Drawing.Size(0, 13);
             this.lb_tablename.TabIndex = 18;
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(910, 415);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(235, 24);
-            this.label2.TabIndex = 16;
-            this.label2.Text = "[Row count; column count]";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1154, 626);
+            this.ClientSize = new System.Drawing.Size(1154, 683);
             this.Controls.Add(this.lb_tablename);
             this.Controls.Add(this.btn_report);
             this.Controls.Add(this.tabControl1);
@@ -334,6 +346,7 @@
         private System.Windows.Forms.DataGridView dataGridView_err;
         private System.Windows.Forms.Label lb_tablename;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btn_update;
     }
 }
 

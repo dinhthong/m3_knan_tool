@@ -36,3 +36,8 @@ Features of db app:
 
 # Preferences, links and resources
 - C# Application - Insert Delete Update Select in MS Access Database: https://www.youtube.com/watch?v=uONQaT-nwls&ab_channel=FoxLearnFoxLearn: Add search feature.
+
+# Bugs:
+1. When [Search] -> [Update] -> It inserts a new row, instead of what we're implying to be. That's because the current 'DataGridview1' is changed, thus, the data we work on when click [Insert], [Update] buttons are wrong.
+2. Detect source of bug: If a cell value/column name has space characters or Vietnamese characters -> causes the Update to throw an exception
+3. When changing the Table with different schema -> Error when calling SelectionChange event (fill_input_textboxes()). Probably because the new schema hasn't updated.
